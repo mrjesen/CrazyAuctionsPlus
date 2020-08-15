@@ -46,7 +46,7 @@ public class CommandAuctionBuy extends VCommand {
 			return CommandType.DEFAULT;
 		}
 
-		double reward = argAsDouble(0);
+		long reward = argAsLong(0);
 
 		double tax = 0;
 		if (!PluginControl.bypassTaxRate(player, ShopType.BUY)) {
@@ -114,14 +114,15 @@ public class CommandAuctionBuy extends VCommand {
 
 		 item.setAmount(amount);
          MarketGoods goods = new MarketGoods(
-             market.makeUID(),
-             ShopType.BUY,
-             new ItemOwner(owner, player.getName()),
-             item,
-             PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Buy-Time")),
-             PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")),
-             reward
-         );
+				 market.makeUID(),
+				 ShopType.BUY,
+				 new ItemOwner(owner, player.getName()),
+				 item,
+				 PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Buy-Time")),
+				 PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")),
+				 System.currentTimeMillis(),
+				 reward
+		 );
          market.addGoods(goods);
          Bukkit.getPluginManager().callEvent(new AuctionListEvent(player, ShopType.BUY, item, reward, tax));
          Map<String, String> placeholders = new HashMap<String, String>();
@@ -131,9 +132,10 @@ public class CommandAuctionBuy extends VCommand {
              placeholders.put("%Item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : (String) item.getClass().getMethod("getI18NDisplayName").invoke(item));
              placeholders.put("%item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : (String) item.getClass().getMethod("getI18NDisplayName").invoke(item));
          } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-             placeholders.put("%Item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().toString().toLowerCase().replace("_", " "));
-             placeholders.put("%item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().toString().toLowerCase().replace("_", " "));
-         }
+			 placeholders.put("%Item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().toString().toLowerCase().replace("_", " "));
+			 placeholders.put("%item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().toString().toLowerCase().replace("_", " "));
+			 PluginControl.printStackTrace(ex);
+		 }
 		 Messages.sendMessage(sender, "Added-Item-For-Acquisition", placeholders);
          CurrencyManager.removeMoney(player, reward + tax);
 		
