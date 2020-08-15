@@ -76,15 +76,16 @@ public class CommandAuctionAdminInfo extends VCommand {
 						items++;
 					}
 				}
-				for (String message : Messages.getMessageList("Admin-Command.Info.Info-Messages")) {
-					sender.sendMessage(message.replace("%player%", offlinePlayer.getName())
-							.replace("%group%", Messages.getMessage("Admin-Command.Info.Unknown"))
-							.replace("%items%", String.valueOf(items)).replace("%database%", database));
-				}
+				Map<String, String> placeholders = new HashMap();
+				placeholders.put("%player%", offlinePlayer.getName());
+				placeholders.put("%group%", Messages.getValue("Admin-Command.Info.Unknown"));
+				placeholders.put("%items%", String.valueOf(items));
+				placeholders.put("%database%", database);
+				Messages.sendMessage(sender, "Admin-Command.Info.Info-Messages", placeholders);
 			} else {
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("%player%", args[2]);
-				sender.sendMessage(Messages.getMessage("Admin-Command.Info.Unknown-Player", map));
+				Map<String, String> placeholders = new HashMap<String, String>();
+				placeholders.put("%player%", args[2]);
+				Messages.sendMessage(sender, "Admin-Command.Info.Unknown-Player", placeholders);
 			}
 
 		} else {
@@ -123,10 +124,12 @@ public class CommandAuctionAdminInfo extends VCommand {
 					items++;
 				}
 			}
-			for (String message : Messages.getMessageList("Admin-Command.Info.Info-Messages")) {
-				sender.sendMessage(message.replace("%player%", player.getName()).replace("%group%", group)
-						.replace("%items%", String.valueOf(items)).replace("%database%", database));
-			}
+			Map<String, String> placeholders = new HashMap();
+			placeholders.put("%player%", player.getName());
+			placeholders.put("%group%", group);
+			placeholders.put("%items%", String.valueOf(items));
+			placeholders.put("%database%", database);
+			Messages.sendMessage(sender, "Admin-Command.Info.Info-Messages", placeholders);
 
 		}
 

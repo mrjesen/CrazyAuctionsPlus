@@ -20,10 +20,10 @@ public class CommandAuctionAdminBackup extends VCommand {
 	protected CommandType perform(Main plugin) {
 		
 		if (FileManager.isBackingUp()) {
-            sender.sendMessage(Messages.getMessage("Admin-Command.Backup.BackingUp"));
+			Messages.sendMessage(sender, "Admin-Command.Backup.BackingUp");
             return CommandType.DEFAULT;
         }
-        sender.sendMessage(Messages.getMessage("Admin-Command.Backup.Starting"));
+		Messages.sendMessage(sender, "Admin-Command.Backup.Starting");
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }

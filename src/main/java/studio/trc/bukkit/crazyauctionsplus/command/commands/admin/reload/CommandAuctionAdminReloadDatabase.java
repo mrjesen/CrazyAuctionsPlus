@@ -24,7 +24,7 @@ public class CommandAuctionAdminReloadDatabase extends VCommand {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
-        sender.sendMessage(Messages.getMessage("Reload-Database"));
+		Messages.sendMessage(sender, "Reload-Database");
 		
 		return CommandType.SUCCESS;
 	}

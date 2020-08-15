@@ -38,12 +38,12 @@ public class CommandAuctionBuy extends VCommand {
 	protected CommandType perform(Main plugin) {
 
 		if (PluginControl.isWorldDisabled(player)) {
-			sender.sendMessage(Messages.getMessage("World-Disabled"));
+			Messages.sendMessage(sender, "World-Disabled");
 			return CommandType.DEFAULT;
 		}
 
 		if (!crazyAuctions.isBuyingEnabled()) {
-			player.sendMessage(Messages.getMessage("Buying-Disable"));
+			Messages.sendMessage(sender, "Buying-Disable");
 			return CommandType.DEFAULT;
 		}
 
@@ -58,21 +58,21 @@ public class CommandAuctionBuy extends VCommand {
 			HashMap<String, String> placeholders = new HashMap<String, String>();
 			placeholders.put("%Money_Needed%", String.valueOf((reward + tax) - CurrencyManager.getMoney(player)));
 			placeholders.put("%money_needed%", String.valueOf((reward + tax) - CurrencyManager.getMoney(player)));
-			player.sendMessage(Messages.getMessage("Need-More-Money", placeholders));
+			Messages.sendMessage(sender, "Need-More-Money",placeholders);
 			return CommandType.DEFAULT;
 		}
 		if (reward < FileManager.Files.CONFIG.getFile().getDouble("Settings.Minimum-Buy-Reward")) {
 			Map<String, String> placeholders = new HashMap<String, String>();
 			placeholders.put("%reward%",
 					String.valueOf(FileManager.Files.CONFIG.getFile().getDouble("Settings.Minimum-Buy-Reward")));
-			player.sendMessage(Messages.getMessage("Buy-Reward-To-Low", placeholders));
+			Messages.sendMessage(sender, "Buy-Reward-To-Low",placeholders);
 			return CommandType.DEFAULT;
 		}
 		if (reward > FileManager.Files.CONFIG.getFile().getDouble("Settings.Max-Beginning-Buy-Reward")) {
 			Map<String, String> placeholders = new HashMap<String, String>();
 			placeholders.put("%reward%",
 					String.valueOf(FileManager.Files.CONFIG.getFile().getDouble("Settings.Max-Beginning-Buy-Reward")));
-			player.sendMessage(Messages.getMessage("Buy-Reward-To-High", placeholders));
+			Messages.sendMessage(sender, "Buy-Reward-To-High",placeholders);
 			return CommandType.DEFAULT;
 		}
 		if (!PluginControl.bypassLimit(player, ShopType.BUY)) {
@@ -81,7 +81,7 @@ public class CommandAuctionBuy extends VCommand {
 				if (crazyAuctions.getNumberOfPlayerItems(player, ShopType.BUY) >= limit) {
 					Map<String, String> placeholders = new HashMap<String, String>();
 					placeholders.put("%number%", String.valueOf(limit));
-					player.sendMessage(Messages.getMessage("Max-Buying-Items", placeholders));
+					Messages.sendMessage(sender, "Max-Buying-Items",placeholders);
 					return CommandType.DEFAULT;
 				}
 			}
@@ -89,7 +89,7 @@ public class CommandAuctionBuy extends VCommand {
 
 		int amount = argAsInteger(1, 1);
 		if (amount > 64) {
-			player.sendMessage(Messages.getMessage("Too-Many-Items"));
+			Messages.sendMessage(sender, "Too-Many-Items");
 			return CommandType.DEFAULT;
 		}
 
@@ -103,13 +103,13 @@ public class CommandAuctionBuy extends VCommand {
 				Map<String, String> placeholders = new HashMap<String, String>();
 				placeholders.put("%Item%", args[3]);
 				placeholders.put("%item%", args[3]);
-				sender.sendMessage(Messages.getMessage("Unknown-Item", placeholders));
+				Messages.sendMessage(sender, "Unknown-Item", placeholders);
 				return CommandType.SUCCESS;
 			}
 		} else if (PluginControl.getItemInHand(player).getType() != Material.AIR) {
 			item = PluginControl.getItemInHand(player).clone();
 		} else {
-			sender.sendMessage(Messages.getMessage("CrazyAuctions-Buy"));
+			Messages.sendMessage(sender, "CrazyAuctions-Buy");
 			return CommandType.SUCCESS;
 		}
 
@@ -135,7 +135,7 @@ public class CommandAuctionBuy extends VCommand {
              placeholders.put("%Item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().toString().toLowerCase().replace("_", " "));
              placeholders.put("%item%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().toString().toLowerCase().replace("_", " "));
          }
-         player.sendMessage(Messages.getMessage("Added-Item-For-Acquisition", placeholders));
+		 Messages.sendMessage(sender, "Added-Item-For-Acquisition", placeholders);
          CurrencyManager.removeMoney(player, reward + tax);
 		
 		return CommandType.SUCCESS;

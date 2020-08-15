@@ -37,12 +37,12 @@ public class CommandAuctionSell extends VCommand {
 	protected CommandType perform(Main plugin) {
 
 		if (PluginControl.isWorldDisabled(player)) {
-			sender.sendMessage(Messages.getMessage("World-Disabled"));
+			Messages.sendMessage(sender, "World-Disabled");
 			return CommandType.SUCCESS;
 		}
 
 		if (!crazyAuctions.isSellingEnabled()) {
-			player.sendMessage(Messages.getMessage("Selling-Disable"));
+			Messages.sendMessage(sender, "Selling-Disable");
 			return CommandType.DEFAULT;
 		}
 
@@ -53,7 +53,7 @@ public class CommandAuctionSell extends VCommand {
 		amount = amount <= 0 ? 1 : amount > item.getAmount() ? item.getAmount() : amount;
 
 		if (PluginControl.getItemInHand(player).getType() == Material.AIR) {
-			player.sendMessage(Messages.getMessage("Doesnt-Have-Item-In-Hand"));
+			Messages.sendMessage(sender, "Doesnt-Have-Item-In-Hand");
 			return CommandType.DEFAULT;
 		}
 
@@ -64,7 +64,7 @@ public class CommandAuctionSell extends VCommand {
 			Map<String, String> placeholders = new HashMap<String, String>();
 			placeholders.put("%price%",
 					String.valueOf(FileManager.Files.CONFIG.getFile().getDouble("Settings.Minimum-Sell-Price")));
-			player.sendMessage(Messages.getMessage("Sell-Price-To-Low", placeholders));
+			Messages.sendMessage(sender, "Sell-Price-To-Low", placeholders);
 			return CommandType.DEFAULT;
 		}
 
@@ -72,7 +72,7 @@ public class CommandAuctionSell extends VCommand {
 			Map<String, String> placeholders = new HashMap<String, String>();
 			placeholders.put("%price%",
 					String.valueOf(FileManager.Files.CONFIG.getFile().getDouble("Settings.Max-Beginning-Sell-Price")));
-			player.sendMessage(Messages.getMessage("Sell-Price-To-High", placeholders));
+			Messages.sendMessage(sender, "Sell-Price-To-High", placeholders);
 			return CommandType.DEFAULT;
 		}
 
@@ -82,7 +82,7 @@ public class CommandAuctionSell extends VCommand {
 				if (crazyAuctions.getNumberOfPlayerItems(player, ShopType.SELL) >= limit) {
 					Map<String, String> placeholders = new HashMap<String, String>();
 					placeholders.put("%number%", String.valueOf(limit));
-					player.sendMessage(Messages.getMessage("Max-Selling-Items", placeholders));
+					Messages.sendMessage(sender, "Max-Selling-Items", placeholders);
 					return CommandType.DEFAULT;
 				}
 			}
@@ -94,14 +94,14 @@ public class CommandAuctionSell extends VCommand {
 				HashMap<String, String> placeholders = new HashMap<String, String>();
 				placeholders.put("%Money_Needed%", String.valueOf(tax - CurrencyManager.getMoney(player)));
 				placeholders.put("%money_needed%", String.valueOf(tax - CurrencyManager.getMoney(player)));
-				player.sendMessage(Messages.getMessage("Need-More-Money", placeholders));
+				Messages.sendMessage(sender, "Need-More-Money", placeholders);
 				return CommandType.DEFAULT;
 			}
 		}
 
 		for (String id : FileManager.Files.CONFIG.getFile().getStringList("Settings.BlackList")) {
 			if (item.getType() == PluginControl.makeItem(id, 1).getType()) {
-				player.sendMessage(Messages.getMessage("Item-BlackListed"));
+				Messages.sendMessage(sender, "Item-BlackListed");
 				return CommandType.DEFAULT;
 			}
 		}
@@ -110,7 +110,7 @@ public class CommandAuctionSell extends VCommand {
 			for (Material i : getDamageableItems()) {
 				if (item.getType() == i) {
 					if (item.getDurability() > 0) {
-						player.sendMessage(Messages.getMessage("Item-Damaged"));
+						Messages.sendMessage(sender, "Item-Damaged");
 						return CommandType.DEFAULT;
 					}
 				}
@@ -135,7 +135,7 @@ public class CommandAuctionSell extends VCommand {
 		placeholders.put("%Price%", String.valueOf(price));
 		placeholders.put("%price%", String.valueOf(price));
 		placeholders.put("%tax%", String.valueOf(tax));
-		player.sendMessage(Messages.getMessage("Added-Item-For-Sale", placeholders));
+		Messages.sendMessage(sender, "Added-Item-For-Sale", placeholders);
 
 		if (item.getAmount() <= 1 || (item.getAmount() - amount) <= 0)
 			PluginControl.setItemInHand(player, new ItemStack(Material.AIR));

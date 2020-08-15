@@ -61,11 +61,11 @@ public class AuctionProcess
                                     Bukkit.getPluginManager().callEvent(event);
                                 }
                             }.runTask(Main.getInstance());
-                            player.sendMessage(Messages.getMessage("Win-Bidding", placeholders));
+                            Messages.sendMessage(player, "Win-Bidding", placeholders);
                         }
                         if (PluginControl.isOnline(owner) && PluginControl.getPlayer(owner) != null) {
                             Player player = PluginControl.getPlayer(owner);
-                            player.sendMessage(Messages.getMessage("Someone-Won-Players-Bid", placeholders));
+                            Messages.sendMessage(player, "Someone-Won-Players-Bid", placeholders);
                         }
                         Storage playerdata = Storage.getPlayer(winner);
                         ItemMail im = new ItemMail(playerdata.makeUID(), PluginControl.getOfflinePlayer(winner), mg.getItem(), fullExpireTime.getTimeInMillis(), false);
@@ -78,7 +78,7 @@ public class AuctionProcess
                         playerdata.addItem(im);
                         market.removeGoods(mg.getUID());
                         if (mg.getItemOwner().getPlayer() != null) {
-                            mg.getItemOwner().getPlayer().sendMessage(Messages.getMessage("Item-Has-Expired"));
+                            Messages.sendMessage(mg.getItemOwner().getPlayer(), "Item-Has-Expired");
                         }
                         break;
                     }

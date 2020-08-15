@@ -147,15 +147,15 @@ public class GUIAction
                                         Map<String, String> placeholders = new HashMap<String, String>();
                                         placeholders.put("%Money_Needed%", String.valueOf(bid - CurrencyManager.getMoney(player)));
                                         placeholders.put("%money_needed%", String.valueOf(bid - CurrencyManager.getMoney(player)));
-                                        player.sendMessage(Messages.getMessage("Need-More-Money", placeholders));
+                                        Messages.sendMessage(player, "Need-More-Money", placeholders);
                                         return;
                                     }
                                     if (mg.getPrice() > bid) {
-                                        player.sendMessage(Messages.getMessage("Bid-More-Money"));
+                                        Messages.sendMessage(player, "Bid-More-Money");
                                         return;
                                     }
                                     if (mg.getPrice() >= bid && !topBidder.equalsIgnoreCase("None")) {
-                                        player.sendMessage(Messages.getMessage("Bid-More-Money"));
+                                        Messages.sendMessage(player, "Bid-More-Money");
                                         return;
                                     }
                                     if (!topBidder.equalsIgnoreCase("None")) {
@@ -169,7 +169,7 @@ public class GUIAction
                                     Map<String, String> placeholders = new HashMap<String, String>();
                                     placeholders.put("%Bid%", String.valueOf(bid));
                                     placeholders.put("%bid%", String.valueOf(bid));
-                                    player.sendMessage(Messages.getMessage("Bid-Msg", placeholders));
+                                    Messages.sendMessage(player, "Bid-Msg", placeholders);
                                     bidding.put(player.getUniqueId(), 0);
                                     player.closeInventory();
                                     playClick(player);
@@ -194,7 +194,7 @@ public class GUIAction
                                             return;
                                         } catch (Exception ex) {
                                             player.closeInventory();
-                                            player.sendMessage(Messages.getMessage("Item-Doesnt-Exist"));
+                                            Messages.sendMessage(player, "Item-Doesnt-Exist");
                                             return;
                                         }
                                     }
@@ -331,7 +331,7 @@ public class GUIAction
                                                     UUID owner = mgs.getItemOwner().getUUID();
                                                     Player p = Bukkit.getPlayer(owner);
                                                     if (p != null) {
-                                                        p.sendMessage(Messages.getMessage("Admin-Force-Cancelled-To-Player"));
+                                                        Messages.sendMessage(p, "Admin-Force-Cancelled-To-Player");
                                                     }
                                                     switch (mgs.getShopType()) {
                                                         case BID: {
@@ -366,7 +366,7 @@ public class GUIAction
 													default:
 														break;
                                                     }
-                                                    player.sendMessage(Messages.getMessage("Admin-Force-Cancelled"));
+                                                    Messages.sendMessage(player, "Admin-Force-Cancelled");
                                                     playClick(player);
                                                     int page = Integer.parseInt(e.getView().getTitle().split("#")[1]);
                                                     openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), page);
@@ -458,7 +458,7 @@ public class GUIAction
                                     }
                                     playClick(player);
                                     openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), 1);
-                                    player.sendMessage(Messages.getMessage("Item-Doesnt-Exist"));
+                                    Messages.sendMessage(player, "Item-Doesnt-Exist");
                                     return;
                                 }
                                 playClick(player);
@@ -487,13 +487,13 @@ public class GUIAction
                                 if (mg == null) {
                                     playClick(player);
                                     openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), 1);
-                                    player.sendMessage(Messages.getMessage("Item-Doesnt-Exist"));
+                                    Messages.sendMessage(player, "Item-Doesnt-Exist");
                                     return;
                                 }
                                 if (PluginControl.isInvFull(player)) {
                                     playClick(player);
                                     player.closeInventory();
-                                    player.sendMessage(Messages.getMessage("Inventory-Full"));
+                                    Messages.sendMessage(player, "Inventory-Full");
                                     return;
                                 }
                                 if (CurrencyManager.getMoney(player) < mg.getPrice()) {
@@ -502,7 +502,7 @@ public class GUIAction
                                     HashMap<String, String> placeholders = new HashMap<String, String>();
                                     placeholders.put("%Money_Needed%", String.valueOf(mg.getPrice() - CurrencyManager.getMoney(player)));
                                     placeholders.put("%money_needed%", String.valueOf(mg.getPrice() - CurrencyManager.getMoney(player)));
-                                    player.sendMessage(Messages.getMessage("Need-More-Money", placeholders));
+                                    Messages.sendMessage(player, "Need-More-Money", placeholders);
                                     return;
                                 }
                                 UUID owner = mg.getItemOwner().getUUID();
@@ -514,10 +514,10 @@ public class GUIAction
                                 placeholders.put("%price%", String.valueOf(mg.getPrice()));
                                 placeholders.put("%Player%", player.getName());
                                 placeholders.put("%player%", player.getName());
-                                player.sendMessage(Messages.getMessage("Bought-Item", placeholders));
+                                Messages.sendMessage(player, "Bought-Item", placeholders);
                                 if (PluginControl.isOnline(owner) && PluginControl.getPlayer(owner) != null) {
-                                    Player sell = PluginControl.getPlayer(owner);
-                                    sell.sendMessage(Messages.getMessage("Player-Bought-Item", placeholders));
+                                    Player p = PluginControl.getPlayer(owner);
+                                    Messages.sendMessage(p, "Player-Bought-Item", placeholders);
                                 }
                                 player.getInventory().addItem(mg.getItem());
                                 market.removeGoods(uid);
@@ -553,13 +553,13 @@ public class GUIAction
                                 if (mg == null) {
                                     playClick(player);
                                     openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), 1);
-                                    player.sendMessage(Messages.getMessage("Item-Doesnt-Exist"));
+                                    Messages.sendMessage(player, "Item-Doesnt-Exist");
                                     return;
                                 }
                                 ItemStack i = mg.getItem();
                                 if (!PluginControl.itemExists(player, i)) {
                                     playClick(player);
-                                    player.sendMessage(Messages.getMessage("Item-Not-Found"));
+                                    Messages.sendMessage(player, "Item-Not-Found");
                                     return;
                                 }
                                 UUID owner = mg.getItemOwner().getUUID();
@@ -574,10 +574,10 @@ public class GUIAction
                                 Storage playerdata = Storage.getPlayer(Bukkit.getOfflinePlayer(owner));
                                 playerdata.addItem(new ItemMail(playerdata.makeUID(), Bukkit.getOfflinePlayer(owner), mg.getItem(), mg.getFullTime(), true));
                                 market.removeGoods(uid);
-                                player.sendMessage(Messages.getMessage("Sell-Item", placeholders));
+                                Messages.sendMessage(player, "Sell-Item", placeholders);
                                 if (PluginControl.isOnline(owner) && PluginControl.getPlayer(owner) != null) {
-                                    Player buyer = PluginControl.getPlayer(owner);
-                                    buyer.sendMessage(Messages.getMessage("Player-Sell-Item", placeholders));
+                                    Player p = PluginControl.getPlayer(owner);
+                                    Messages.sendMessage(p, "Player-Sell-Item", placeholders);
                                 }
                                 playClick(player);
                                 openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), 1);
@@ -619,7 +619,7 @@ public class GUIAction
                                 if (mg == null) {
                                     playClick(player);
                                     openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), 1);
-                                    player.sendMessage(Messages.getMessage("Item-Doesnt-Exist"));
+                                    Messages.sendMessage(player, "Item-Doesnt-Exist");
                                 }
                                 switch (mg.getShopType()) {
                                     case BID: {
@@ -629,7 +629,7 @@ public class GUIAction
                                         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                                             placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                                         }
-                                        player.sendMessage(Messages.getMessage("Cancelled-Item-On-Bid", placeholders));
+                                        Messages.sendMessage(player, "Cancelled-Item-On-Bid", placeholders);
                                         AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.BID);
                                         Bukkit.getPluginManager().callEvent(event);
                                         if (mg.getTopBidder() != null && !mg.getTopBidder().equalsIgnoreCase("None")) {
@@ -655,7 +655,7 @@ public class GUIAction
                                                 placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                                             }
                                             placeholders.put("%timeout%", config.getString("Settings.Repricing-Timeout"));
-                                            player.sendMessage(Messages.getMessage("Repricing", placeholders));
+                                            Messages.sendMessage(player, "Repricing", placeholders);
                                             playClick(player);
                                             player.closeInventory();
                                             return;
@@ -668,7 +668,7 @@ public class GUIAction
                                         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                                             placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                                         }
-                                        player.sendMessage(Messages.getMessage("Cancelled-Item-On-Buy", placeholders));
+                                        Messages.sendMessage(player, "Cancelled-Item-On-Buy", placeholders);
                                         AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.BUY);
                                         Bukkit.getPluginManager().callEvent(event);
                                         CurrencyManager.addMoney(player, mg.getReward());
@@ -687,7 +687,7 @@ public class GUIAction
                                                 placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                                             }
                                             placeholders.put("%timeout%", config.getString("Settings.Repricing-Timeout"));
-                                            player.sendMessage(Messages.getMessage("Repricing", placeholders));
+                                            Messages.sendMessage(player, "Repricing", placeholders);
                                             playClick(player);
                                             player.closeInventory();
                                             return;
@@ -698,7 +698,7 @@ public class GUIAction
                                         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                                             placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                                         }
-                                        player.sendMessage(Messages.getMessage("Cancelled-Item-On-Sale", placeholders));
+                                        Messages.sendMessage(player, "Cancelled-Item-On-Sale", placeholders);
                                         AuctionCancelledEvent event = new AuctionCancelledEvent(player, mg, CancelledReason.PLAYER_FORCE_CANCEL, ShopType.SELL);
                                         Bukkit.getPluginManager().callEvent(event);
                                         Storage playerdata = Storage.getPlayer(mg.getItemOwner().getUUID());
@@ -751,14 +751,14 @@ public class GUIAction
                                 int page = Integer.parseInt(e.getView().getTitle().split("#")[1]);
                                 for (ItemMail im : playerdata.getMailBox()) {
                                     if (PluginControl.isInvFull(player)) {
-                                        player.sendMessage(Messages.getMessage("Inventory-Full"));
+                                        Messages.sendMessage(player, "Inventory-Full");
                                         playerdata.saveData();
                                         return;
                                     }
                                     im.giveItem();
                                 }
                                 playerdata.clearMailBox();
-                                player.sendMessage(Messages.getMessage("Got-All-Item-Back"));
+                                Messages.sendMessage(player, "Got-All-Item-Back");
                                 playClick(player);
                                 openPlayersMail(player, page);
                                 return;
@@ -778,20 +778,20 @@ public class GUIAction
                                 for (ItemMail im : mails.getMailBox()) {
                                     if (uid == im.getUID()) {
                                         if (!PluginControl.isInvFull(player)) {
-                                            player.sendMessage(Messages.getMessage("Got-Item-Back"));
+                                            Messages.sendMessage(player, "Got-Item-Back");
                                             im.giveItem();
                                             mails.saveData();
                                             playClick(player);
                                             openPlayersMail(player, 1);
                                         } else {
-                                            player.sendMessage(Messages.getMessage("Inventory-Full"));
+                                            Messages.sendMessage(player, "Inventory-Full");
                                         }
                                         return;
                                     }
                                 }
                                 playClick(player);
                                 openShop(player, shopType.get(player.getUniqueId()), shopCategory.get(player.getUniqueId()), 1);
-                                player.sendMessage(Messages.getMessage("Item-Doesnt-Exist"));
+                                Messages.sendMessage(player, "Item-Doesnt-Exist");
                             }
                         }
                     }
@@ -802,21 +802,21 @@ public class GUIAction
     
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onRepricing(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        if (repricing.get(p.getUniqueId()) != null) {
+        Player player = e.getPlayer();
+        if (repricing.get(player.getUniqueId()) != null) {
             ProtectedConfiguration config = Files.CONFIG.getFile();
             if (!PluginControl.isNumber(e.getMessage())) {
                 Map<String, String> placeholders = new HashMap<String, String>();
                 placeholders.put("%Arg%", e.getMessage());
                 placeholders.put("%arg%", e.getMessage());
-                p.sendMessage(Messages.getMessage("Not-A-Valid-Number", placeholders));
-                repricing.remove(p.getUniqueId());
+                Messages.sendMessage(player, "Not-A-Valid-Number", placeholders);
+                repricing.remove(player.getUniqueId());
                 e.setCancelled(true);
                 return;
             }
             MarketGoods mg;
             try {
-                mg = (MarketGoods) repricing.get(p.getUniqueId())[0];
+                mg = (MarketGoods) repricing.get(player.getUniqueId())[0];
             } catch (ClassCastException ex) {
                 return;
             }
@@ -827,30 +827,30 @@ public class GUIAction
                         if (money < config.getDouble("Settings.Minimum-Buy-Reward")) {
                             Map<String, String> placeholders = new HashMap<String, String>();
                             placeholders.put("%reward%", String.valueOf(config.getDouble("Settings.Minimum-Buy-Reward")));
-                            p.sendMessage(Messages.getMessage("Buy-Reward-To-Low", placeholders));
-                            repricing.remove(p.getUniqueId());
+                            Messages.sendMessage(player, "Buy-Reward-To-Low", placeholders);
+                            repricing.remove(player.getUniqueId());
                             e.setCancelled(true);
                             return;
                         }
                         if (money > config.getLong("Settings.Max-Beginning-Buy-Reward")) {
                             Map<String, String> placeholders = new HashMap<String, String>();
                             placeholders.put("%reward%", String.valueOf(config.getDouble("Settings.Max-Beginning-Buy-Reward")));
-                            p.sendMessage(Messages.getMessage("Buy-Reward-To-High", placeholders));
-                            repricing.remove(p.getUniqueId());
+                            Messages.sendMessage(player, "Buy-Reward-To-High", placeholders);
+                            repricing.remove(player.getUniqueId());
                             e.setCancelled(true);
                             return;
                         }
-                        if (CurrencyManager.getMoney(p) < money) { 
+                        if (CurrencyManager.getMoney(player) < money) {
                             HashMap<String, String> placeholders = new HashMap<String, String>();
-                            placeholders.put("%Money_Needed%", String.valueOf(money - CurrencyManager.getMoney(p)));
-                            placeholders.put("%money_needed%", String.valueOf(money - CurrencyManager.getMoney(p)));
-                            p.sendMessage(Messages.getMessage("Need-More-Money", placeholders));
-                            repricing.remove(p.getUniqueId());
+                            placeholders.put("%Money_Needed%", String.valueOf(money - CurrencyManager.getMoney(player)));
+                            placeholders.put("%money_needed%", String.valueOf(money - CurrencyManager.getMoney(player)));
+                            Messages.sendMessage(player, "Need-More-Money", placeholders);
+                            repricing.remove(player.getUniqueId());
                             e.setCancelled(true);
                             return;
                         }
-                        CurrencyManager.addMoney(p, mg.getReward());
-                        CurrencyManager.removeMoney(p, money);
+                        CurrencyManager.addMoney(player, mg.getReward());
+                        CurrencyManager.removeMoney(player, money);
                         mg.setReward(money);
                         Map<String, String> placeholders = new HashMap<String, String>();
                         placeholders.put("%money%", String.valueOf(money));
@@ -859,8 +859,8 @@ public class GUIAction
                         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                             placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                         }
-                        p.sendMessage(Messages.getMessage("Repricing-Succeeded", placeholders));
-                        repricing.remove(p.getUniqueId());
+                        Messages.sendMessage(player, "Repricing-Succeeded", placeholders);
+                        repricing.remove(player.getUniqueId());
                         e.setCancelled(true);
                         break;
                     }
@@ -868,16 +868,16 @@ public class GUIAction
                         if (money < config.getDouble("Settings.Minimum-Sell-Price")) {
                             Map<String, String> placeholders = new HashMap<String, String>();
                             placeholders.put("%price%", String.valueOf(config.getDouble("Settings.Minimum-Sell-Price")));
-                            p.sendMessage(Messages.getMessage("Sell-Price-To-Low", placeholders));
-                            repricing.remove(p.getUniqueId());
+                            Messages.sendMessage(player, "Sell-Price-To-Low", placeholders);
+                            repricing.remove(player.getUniqueId());
                             e.setCancelled(true);
                             return;
                         }
                         if (money > config.getLong("Settings.Max-Beginning-Sell-Price")) {
                             Map<String, String> placeholders = new HashMap<String, String>();
                             placeholders.put("%price%", String.valueOf(config.getDouble("Settings.Max-Beginning-Sell-Price")));
-                            p.sendMessage(Messages.getMessage("Sell-Price-To-High", placeholders));
-                            repricing.remove(p.getUniqueId());
+                            Messages.sendMessage(player, "Sell-Price-To-High", placeholders);
+                            repricing.remove(player.getUniqueId());
                             e.setCancelled(true);
                             return;
                         }
@@ -889,8 +889,8 @@ public class GUIAction
                         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                             placeholders.put("%item%", mg.getItem().getItemMeta().hasDisplayName() ? mg.getItem().getItemMeta().getDisplayName() : mg.getItem().getType().toString().toLowerCase().replace("_", " "));
                         }
-                        p.sendMessage(Messages.getMessage("Repricing-Succeeded", placeholders));
-                        repricing.remove(p.getUniqueId());
+                        Messages.sendMessage(player, "Repricing-Succeeded", placeholders);
+                        repricing.remove(player.getUniqueId());
                         e.setCancelled(true);
                         break;
                     }
@@ -898,8 +898,8 @@ public class GUIAction
 					break;
                 }
             } else {
-                p.sendMessage(Messages.getMessage("Repricing-Failed"));
-                repricing.remove(p.getUniqueId());
+                Messages.sendMessage(player, "Repricing-Failed");
+                repricing.remove(player.getUniqueId());
                 e.setCancelled(true);
             }
         }

@@ -21,15 +21,15 @@ public class CommandAuctionAdminItemCollectionList extends VCommand {
 	protected CommandType perform(Main plugin) {
 
 		if (ItemCollection.getCollection().isEmpty()) {
-			sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.List.Empty-Collection"));
+			Messages.sendMessage(sender, "Admin-Command.ItemCollection.List.Empty-Collection");
 		} else {
-			String format = Messages.getMessage("Admin-Command.ItemCollection.List.List-Format");
+			String format = Messages.getValue("Admin-Command.ItemCollection.List.List-Format");
 			List<String> list = new ArrayList<String>();
 			for (ItemCollection collection : ItemCollection.getCollection()) {
 				list.add(format.replace("%uid%", String.valueOf(collection.getUID())).replace("%item%",
 						collection.getDisplayName()));
 			}
-			for (String message : Messages.getMessageList("Admin-Command.ItemCollection.List.Messages")) {
+			for (String message : Messages.getValueList("Admin-Command.ItemCollection.List.Messages")) {
 				sender.sendMessage(
 						message.replace("%list%", list.toString().substring(1, list.toString().length() - 1)));
 			}

@@ -38,7 +38,7 @@ public class Join
             if (player == null) return;
             Storage data = Storage.getPlayer(player);
             if (data.getMailNumber() > 0) {
-                player.sendMessage(Messages.getMessage("Email-of-player-owned-items"));
+                Messages.sendMessage(player, "Email-of-player-owned-items");
             }
         }).start();
     }

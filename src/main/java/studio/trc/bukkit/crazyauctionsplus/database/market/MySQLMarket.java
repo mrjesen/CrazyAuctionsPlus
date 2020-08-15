@@ -40,7 +40,9 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 
 	@Override
 	public List<MarketGoods> getItems() {
-		if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
+		if (getUpdateDelay() == 0) {
+			reloadData();
+		} else if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
 			reloadData();
 			lastUpdateTime = System.currentTimeMillis();
 		}
@@ -49,7 +51,9 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 
 	@Override
 	public MarketGoods getMarketGoods(long uid) {
-		if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
+		if (getUpdateDelay() == 0) {
+			reloadData();
+		} else if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
 			reloadData();
 			lastUpdateTime = System.currentTimeMillis();
 		}
@@ -64,10 +68,12 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 	@Override
 	public long makeUID() {
 		long id = 0;
-		while (true) { // 循环查找
+		while (true) {
 			id++;
 			boolean b = false;
-			if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
+			if (getUpdateDelay() == 0) {
+				reloadData();
+			} else if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
 				reloadData();
 				lastUpdateTime = System.currentTimeMillis();
 			}
@@ -92,7 +98,9 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 
 	@Override
 	public void removeGoods(MarketGoods goods) {
-		if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
+		if (getUpdateDelay() == 0) {
+			reloadData();
+		} else if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
 			reloadData();
 			lastUpdateTime = System.currentTimeMillis();
 		}
@@ -107,7 +115,9 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 
 	@Override
 	public void removeGoods(long uid) {
-		if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
+		if (getUpdateDelay() == 0) {
+			reloadData();
+		} else if (isMarketReacquisition() && System.currentTimeMillis() - lastUpdateTime >= getUpdateDelay() * 1000) {
 			reloadData();
 			lastUpdateTime = System.currentTimeMillis();
 		}
@@ -117,6 +127,12 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 				break;
 			}
 		}
+		saveData();
+	}
+
+	@Override
+	public void clearGlobalMarket() {
+		marketgoods.clear();
 		saveData();
 	}
 
@@ -169,8 +185,8 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 		} catch (SQLException ex) {
 			if (Main.language.get("MySQL-DataSavingError") != null)
 				Main.getInstance().getServer().getConsoleSender()
-						.sendMessage(Main.language.getProperty("DataSaveingError")
-								.replace("{error}", ex.getLocalizedMessage())
+						.sendMessage(Main.language.getProperty("MySQL-DataSaveingError")
+								.replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
 								.replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 			try {
 				if (getConnection().isClosed())
@@ -190,9 +206,12 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 			if (rs != null && rs.next()) {
 				String stringYaml = rs.getString("YamlMarket");
 				yamlMarket.loadFromString(stringYaml);
-				if (yamlMarket.get("Items") == null) {
+				if (stringYaml.isEmpty()) {
 					return;
+				} else {
+				yamlMarket.loadFromString(stringYaml);
 				}
+				if (yamlMarket.get("Items") == null) return;
 				for (String path : yamlMarket.getConfigurationSection("Items").getKeys(false)) {
 					String[] owner = yamlMarket.getString("Items." + path + ".Owner").split(":");
 					ShopType shoptype = ShopType
@@ -239,17 +258,16 @@ public class MySQLMarket extends MySQLEngine implements GlobalMarket {
 				createMarket.setString(1, "{}");
 				executeUpdate(createMarket);
 			}
-		} catch (SQLException | InvalidConfigurationException | NullPointerException ex) {
-			if (Main.language.get("MySQL-DataReadingError") != null)
-				Main.getInstance().getServer().getConsoleSender()
-						.sendMessage(Main.language.getProperty("MySQL-DataReadingError")
-								.replace("{error}", ex.getLocalizedMessage())
-								.replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+		} catch (SQLException ex) {
+			if (Main.language.get("MySQL-DataReadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MySQL-DataReadingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 			try {
-				if (getConnection().isClosed())
+				if (getConnection().isClosed()) {
 					repairConnection();
-			} catch (SQLException ex1) {
-			}
+					reloadData();
+				}
+			} catch (SQLException ex1) {}
+		} catch (InvalidConfigurationException | NullPointerException ex) {
+			if (Main.language.get("MarketDataFailedToLoad") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MarketDataFailedToLoad").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 		}
 	}
 

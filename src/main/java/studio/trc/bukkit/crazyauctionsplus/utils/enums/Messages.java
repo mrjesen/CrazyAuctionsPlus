@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+import org.bukkit.command.CommandSender;
+
 public enum Messages {
     
     @Deprecated PLAYERS_ONLY("Players-Only", "&cOnly players can use this command."),
@@ -122,21 +124,107 @@ public enum Messages {
             }
         }
     }
-    
-    public static String getMessage(String path) {
-        return PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path).replace("{prefix}", PluginControl.getPrefix()));
-    }
-    
-    public static String getMessage(String path, Map<String, String> placeholders) {
-        String message = PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path).replace("{prefix}", PluginControl.getPrefix()));
-        for (String ph : placeholders.keySet()) {
-            message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase());
+
+    /**
+     * Send message to command sender.
+     * @param sender Command sender.
+     * @param path Messages.yml's path
+     */
+    public static void sendMessage(CommandSender sender, String path) {
+        if (sender == null) return;
+        List<String> messages = Files.MESSAGES.getFile().getStringList(Files.CONFIG.getFile().getString("Settings.Language") + "." + path);
+        if (messages.isEmpty()) {
+            sender.sendMessage(PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n")));
+        } else {
+            for (String message : messages) {
+                sender.sendMessage(PluginControl.color(message.replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n")));
+            }
         }
-        return message;
     }
     
-    public static List<String> getMessageList(String path) {
-        List<String> list = new ArrayList<String>();
+
+    /**
+     * Send message to command sender.
+     * @param sender Command sender.
+     * @param path Messages.yml's path
+     * @param placeholders If the text contains a placeholder,
+     *                      The placeholder will be replaced with the specified text.
+     */
+    public static void sendMessage(CommandSender sender, String path, Map<String, String> placeholders){
+        if (sender == null) return;
+        List<String> messages = Files.MESSAGES.getFile().getStringList(Files.CONFIG.getFile().getString("Settings.Language") + "." + path);
+        if (messages.isEmpty()) {
+            String message = PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path));
+            for (String ph : placeholders.keySet()) {
+                message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase());
+            }
+            sender.sendMessage(PluginControl.color(message.replace("{prefix}", PluginControl.getPrefix())).replace("/n", "\n"));
+        } else {
+            for (String message : messages) {
+                for (String ph : placeholders.keySet()) {
+                    message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase()).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n");
+                }
+                sender.sendMessage(message);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param sender Command sender.
+     * @param path Messages.yml's path
+     * @param placeholders If the text contains a placeholder,
+     *                      The placeholder will be replaced with the specified text.
+     * @param visible If the text contains a placeholder,
+     *                 whether the entire line is visible or not will be
+     *                 determined by the Boolean value corresponding to the placeholder.
+     */
+    public static void sendMessage(CommandSender sender, String path, Map<String, String> placeholders, Map<String, Boolean> visible) {
+        if (sender == null) return;
+        List<String> messages = Files.MESSAGES.getFile().getStringList(Files.CONFIG.getFile().getString("Settings.Language") + "." + path);
+        if (messages.isEmpty()) {
+            String message = PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path));
+            for (String v : visible.keySet()) {
+                if (message.contains(v)) {
+                    if (!visible.get(v)) {
+                        return;
+                    }
+                }
+            }
+            for (String ph : placeholders.keySet()) {
+                message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase());
+            }
+            sender.sendMessage(PluginControl.color(message.replace("{prefix}", PluginControl.getPrefix())).replace("/n", "\n"));
+        } else {
+            for (String message : messages) {
+                boolean isVisible = true;
+                for (String v : visible.keySet()) {
+                    if (message.contains(v)) {
+                        if (!visible.get(v)) {
+                            isVisible = false;
+                            break;
+                        } else {
+                            message = message.replace(v, "");
+                        }
+                    }
+                }
+                if (!isVisible) {
+                    continue;
+                }
+                for (String ph : placeholders.keySet()) {
+                    message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase()).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n");
+                }
+                sender.sendMessage(message);
+            }
+        }
+    }
+
+    public static String getValue(String path) {
+        return PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n"));
+    }
+
+    public static List<String> getValueList(String path) {
+        List<String> list = new ArrayList();
         ProtectedConfiguration config = Files.CONFIG.getFile();
         for (String message : Files.MESSAGES.getFile().getStringList(config.getString("Settings.Language") + "." + path)) {
             list.add(PluginControl.color(message.replace("{prefix}", config.getString("Settings.Prefix"))));

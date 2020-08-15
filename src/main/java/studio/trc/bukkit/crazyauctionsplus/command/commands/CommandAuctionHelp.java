@@ -15,7 +15,7 @@ public class CommandAuctionHelp extends VCommand {
 	@Override
 	protected CommandType perform(Main plugin) {
 
-		for (String message : Messages.getMessageList("Help-Menu")) {
+		for (String message : Messages.getValueList("Help-Menu")) {
             sender.sendMessage(message);
         }
 

@@ -24,7 +24,7 @@ public class CommandAuctionAdminReloadCategory extends VCommand {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.closeInventory();
 		}
-		sender.sendMessage(Messages.getMessage("Reload-Category"));
+		Messages.sendMessage(sender, "Reload-Category");
 
 		return CommandType.SUCCESS;
 	}

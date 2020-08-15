@@ -19,7 +19,7 @@ public class CommandAuctionAdminItemCollection extends VCommand {
 	@Override
 	protected CommandType perform(Main plugin) {
 		
-		for (String message : Messages.getMessageList("Admin-Command.ItemCollection.Help")) {
+		for (String message : Messages.getValueList("Admin-Command.ItemCollection.Help")) {
             sender.sendMessage(message);
         }
 		

@@ -20,9 +20,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.database.Storage;
 import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
 import studio.trc.bukkit.crazyauctionsplus.utils.ItemMail;
+import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
 
 public class MySQLStorage extends MySQLEngine implements Storage {
 	public static final Map<UUID, MySQLStorage> cache = new HashMap<UUID, MySQLStorage>();
@@ -45,9 +47,15 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 			} else {
 				register(uuid);
 			}
-		} catch (SQLException | InvalidConfigurationException ex) {
-			Logger.getLogger(MySQLStorage.class.getName()).log(Level.SEVERE, null, ex);
-			return;
+		} catch (SQLException ex) {
+			if (Main.language.get("MySQL-DataReadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MySQL-DataReadingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			try {
+				if (super.getConnection().isClosed()) {
+					super.repairConnection();
+				}
+			} catch (SQLException ex1) {}
+		} catch (InvalidConfigurationException | NullPointerException ex) {
+			if (Main.language.get("PlayerDataFailedToLoad") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("PlayerDataFailedToLoad").replace("{player}", Bukkit.getPlayer(uuid) != null ? Bukkit.getPlayer(uuid).getName() : "null").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 		}
 
 		loadData();
@@ -76,9 +84,6 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 										? yamlData.getLong("Items." + path + ".Full-Time") : 0,
 								yamlData.get("Items." + path + ".Never-Expire") != null
 										? yamlData.getBoolean("Items." + path + ".Never-Expire") : false);
-						// im.setUID(yamlData.get("Items." + path + ".UID") !=
-						// null ? yamlData.getLong("Items." + path + ".UID") :
-						// Long.valueOf(path));
 					} catch (Exception ex) {
 						continue;
 					}
@@ -168,9 +173,9 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 			id++;
 			boolean b = false;
 			for (ItemMail im : mailBox) {
-				if (im.getUID() == id) { // 如果有任何一个商品的UID等于变量id，即弃
-					b = true; // 继续执行循环，不break
-					break; // 停止，先+1再说
+				if (im.getUID() == id) {
+					b = true;
+					break;
 				}
 			}
 			if (b)
@@ -180,19 +185,6 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 		return id;
 	}
 
-	// @Deprecated
-	// @Override
-	// protected void register(String sql) {
-	// while (isdatabaseReloading()) {}
-	// executeUpdate(sql);
-	// }
-	//
-	// @Override
-	// protected void register(PreparedStatement statement) throws SQLException
-	// {
-	// throw new UnsupportedOperationException("Not supported yet."); //To
-	// change body of generated methods, choose Tools | Templates.
-	// }
 	private void register(UUID uuid) throws SQLException {
 		String name = Bukkit.getOfflinePlayer(uuid) != null ? Bukkit.getOfflinePlayer(uuid).getName() : null;
 		if (name == null) {
@@ -208,41 +200,53 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 	}
 
 	public static MySQLStorage getPlayerData(Player player) {
-		MySQLStorage data = cache.get(player.getUniqueId());
-		if (data != null) {
-			if (!isItemMailReacquisition() || System.currentTimeMillis() - lastUpdateTime <= getUpdateDelay() * 1000) {
-				return data;
+		if (isItemMailReacquisition() && getUpdateDelay() == 0) {
+			return new MySQLStorage(player.getUniqueId());
+		} else {
+			MySQLStorage data = cache.get(player.getUniqueId());
+			if (data != null && getUpdateDelay() != 0) {
+				if (!isItemMailReacquisition() || System.currentTimeMillis() - lastUpdateTime <= getUpdateDelay() * 1000) {
+					return data;
+				}
 			}
+			data = new MySQLStorage(player.getUniqueId());
+			cache.put(player.getUniqueId(), data);
+			lastUpdateTime = System.currentTimeMillis();
+			return data;
 		}
-		data = new MySQLStorage(player.getUniqueId());
-		cache.put(player.getUniqueId(), data);
-		lastUpdateTime = System.currentTimeMillis();
-		return data;
 	}
 
 	public static MySQLStorage getPlayerData(OfflinePlayer player) {
-		MySQLStorage data = cache.get(player.getUniqueId());
-		if (data != null) {
-			if (!isItemMailReacquisition() || System.currentTimeMillis() - lastUpdateTime <= getUpdateDelay() * 1000) {
-				return data;
+		if (isItemMailReacquisition() && getUpdateDelay() == 0) {
+			return new MySQLStorage(player.getUniqueId());
+		} else {
+			MySQLStorage data = cache.get(player.getUniqueId());
+			if (data != null && getUpdateDelay() != 0) {
+				if (!isItemMailReacquisition() || System.currentTimeMillis() - lastUpdateTime <= getUpdateDelay() * 1000) {
+					return data;
+				}
 			}
+			data = new MySQLStorage(player.getUniqueId());
+			cache.put(player.getUniqueId(), data);
+			lastUpdateTime = System.currentTimeMillis();
+			return data;
 		}
-		data = new MySQLStorage(player.getUniqueId());
-		cache.put(player.getUniqueId(), data);
-		lastUpdateTime = System.currentTimeMillis();
-		return data;
 	}
 
 	public static MySQLStorage getPlayerData(UUID uuid) {
-		MySQLStorage data = cache.get(uuid);
-		if (data != null) {
-			if (!isItemMailReacquisition() || System.currentTimeMillis() - lastUpdateTime <= getUpdateDelay() * 1000) {
-				return data;
+		if (isItemMailReacquisition() && getUpdateDelay() == 0) {
+			return new MySQLStorage(uuid);
+		} else {
+			MySQLStorage data = cache.get(uuid);
+			if (data != null && getUpdateDelay() != 0) {
+				if (!isItemMailReacquisition() || System.currentTimeMillis() - lastUpdateTime <= getUpdateDelay() * 1000) {
+					return data;
+				}
 			}
+			data = new MySQLStorage(uuid);
+			cache.put(uuid, data);
+			lastUpdateTime = System.currentTimeMillis();
+			return data;
 		}
-		data = new MySQLStorage(uuid);
-		cache.put(uuid, data);
-		lastUpdateTime = System.currentTimeMillis();
-		return data;
 	}
 }

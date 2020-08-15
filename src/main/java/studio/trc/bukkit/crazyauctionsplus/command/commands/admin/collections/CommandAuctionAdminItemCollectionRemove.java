@@ -28,30 +28,30 @@ public class CommandAuctionAdminItemCollectionRemove extends VCommand {
 			long uid = Long.valueOf(arg);
 			for (ItemCollection ic : ItemCollection.getCollection()) {
 				if (ic.getUID() == uid) {
-					Map<String, String> map = new HashMap<String, String>();
-					map.put("%item%", ic.getDisplayName());
+					Map<String, String> placeholders = new HashMap<String, String>();
+					placeholders.put("%item%", ic.getDisplayName());
 					ItemCollection.deleteItem(uid);
-					sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Delete.Successfully", map));
+					Messages.sendMessage(sender, "Admin-Command.ItemCollection.Delete.Successfully", placeholders);
 					return CommandType.SUCCESS;
 				}
 			}
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("%item%", arg);
-			sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Delete.Item-Not-Exist", map));
+			Map<String, String> placeholders = new HashMap<String, String>();
+			placeholders.put("%item%", arg);
+			Messages.sendMessage(sender, "Admin-Command.ItemCollection.Delete.Item-Not-Exist", placeholders);
 		} catch (NumberFormatException ex) {
 			String displayName = arg;
 			for (ItemCollection ic : ItemCollection.getCollection()) {
 				if (ic.getDisplayName().equalsIgnoreCase(displayName)) {
-					Map<String, String> map = new HashMap<String, String>();
-					map.put("%item%", ic.getDisplayName());
+					Map<String, String> placeholders = new HashMap<String, String>();
+					placeholders.put("%item%", ic.getDisplayName());
 					ItemCollection.deleteItem(displayName);
-					sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Delete.Successfully", map));
+					Messages.sendMessage(sender, "Admin-Command.ItemCollection.Delete.Successfully", placeholders);
 					return CommandType.SUCCESS;
 				}
 			}
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("%item%", arg);
-			sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Delete.Item-Not-Exist", map));
+			Map<String, String> placeholders = new HashMap<String, String>();
+			placeholders.put("%item%", arg);
+			Messages.sendMessage(sender, "Admin-Command.ItemCollection.Delete.Item-Not-Exist", placeholders);
 		}
 
 		return CommandType.SUCCESS;

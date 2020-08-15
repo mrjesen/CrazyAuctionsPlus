@@ -24,7 +24,7 @@ public class CommandAuctionAdminReloadItemCollection extends VCommand {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
-        sender.sendMessage(Messages.getMessage("Reload-ItemCollection"));
+		Messages.sendMessage(sender, "Reload-ItemCollection");
 
 		return CommandType.SUCCESS;
 	}

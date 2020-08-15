@@ -24,7 +24,7 @@ public class CommandAuctionAdminReloadMarket extends VCommand {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
         }
-        sender.sendMessage(Messages.getMessage("Reload-Market"));
+		Messages.sendMessage(sender, "Reload-Market");
 		
 		return CommandType.SUCCESS;
 	}

@@ -99,6 +99,12 @@ public class YamlMarket implements GlobalMarket {
 	}
 
 	@Override
+	public void clearGlobalMarket() {
+		marketgoods.clear();
+		saveData();
+	}
+
+	@Override
 	public void saveData() {
 		ProtectedConfiguration data = Files.DATABASE.getFile();
 		data.set("Items", null);

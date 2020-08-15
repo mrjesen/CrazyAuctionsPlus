@@ -26,13 +26,13 @@ public class CommandAuctionAdminRollBack extends VCommand {
 
 		File backupFile = new File("plugins/CrazyAuctionsPlus/Backup/" + file);
 		if (backupFile.exists()) {
-			sender.sendMessage(Messages.getMessage("Admin-Command.RollBack.Starting"));
+			Messages.sendMessage(sender, "Admin-Command.RollBack.Starting");
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				player.closeInventory();
 			}
 			FileManager.rollBack(backupFile, sender);
 		} else {
-			sender.sendMessage(Messages.getMessage("Admin-Command.RollBack.Backup-Not-Exist").replace("%file%", file));
+			sender.sendMessage(Messages.getValue("Admin-Command.RollBack.Backup-Not-Exist").replace("%file%", file));
 		}
 
 		return CommandType.SUCCESS;

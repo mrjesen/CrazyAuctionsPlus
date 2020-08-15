@@ -138,7 +138,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 					return true;
 			}
 		}
-		sender.sendMessage(Messages.getMessage("CrazyAuctions-Help"));
+		Messages.sendMessage(sender, "CrazyAuctions-Help");
 		return true;
 	}
 
@@ -189,16 +189,16 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 	private CommandType processRequirements(VCommand command, CommandSender sender, String[] strings) {
 
 		if (FileManager.isBackingUp()) {
-			sender.sendMessage(Messages.getMessage("Admin-Command.Backup.BackingUp"));
+			Messages.sendMessage(sender, "Admin-Command.Backup.BackingUp");
 			return CommandType.DEFAULT;
 		}
 		if (FileManager.isRollingBack()) {
-			sender.sendMessage(Messages.getMessage("Admin-Command.RollBack.RollingBack"));
+			Messages.sendMessage(sender, "Admin-Command.RollBack.RollingBack");
 			return CommandType.DEFAULT;
 		}
 
 		if (!(sender instanceof Player) && !command.isConsoleCanUse()) {
-			sender.sendMessage(Messages.getMessage("Players-Only"));
+			Messages.sendMessage(sender, "Players-Only");
 			return CommandType.DEFAULT;
 		}
 

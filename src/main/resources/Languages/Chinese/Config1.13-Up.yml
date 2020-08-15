@@ -46,7 +46,7 @@ Settings:
     Item-NBT-comparison: true
     Feature-Toggle:
         Selling: true
-        Bidding: true
+        Bidding: false
         Buying: true
     #禁止使用本插件功能的世界
     Disabled-Worlds:
@@ -72,11 +72,11 @@ Settings:
         #如果你有多个服务器正在使用同一个MySQL，建议启用它以保障数据实时同步
         Data-Reacquisition:
             #市场的数据
-            Market: false
+            Market: true
             #玩家邮箱
-            Item-Mail: false
+            Item-Mail: true
             #间隔时间（秒，可以有小数）
-            Delay: 5
+            Delay: 0
         #数据表名称
         Table-Name: 
             #市场
@@ -679,6 +679,31 @@ Settings:
                     Info:
                         Permission: crazyauctionsplus.command.admin.info
                         Default: false
+                    Market:
+                        Permission: crazyauctionsplus.command.admin.market
+                        Default: false
+                        SubCommands:
+                            Confirm:
+                                Permission: crazyauctionsplus.command.admin.market.confirm
+                                Default: false
+                            Clear:
+                                Permission: crazyauctionsplus.command.admin.market.clear
+                                Default: false
+                            List:
+                                Permission: crazyauctionsplus.command.admin.market.list
+                                Default: false
+                            Repricing:
+                                Permission: crazyauctionsplus.command.admin.market.repricing
+                                Default: false
+                            Delete:
+                                Permission: crazyauctionsplus.command.admin.market.delete
+                                Default: false
+                            Download:
+                                Permission: crazyauctionsplus.command.admin.market.download
+                                Default: false
+                            Upload:
+                                Permission: crazyauctionsplus.command.admin.market.upload
+                                Default: false
                     ItemCollection:
                         Permission: crazyauctionsplus.command.admin.itemcollection
                         Default: false

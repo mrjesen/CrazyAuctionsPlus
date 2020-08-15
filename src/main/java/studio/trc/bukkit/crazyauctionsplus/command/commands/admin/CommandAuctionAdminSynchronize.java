@@ -17,10 +17,10 @@ public class CommandAuctionAdminSynchronize extends VCommand {
 	protected CommandType perform(Main plugin) {
 		
 		if (FileManager.isSyncing()) {
-            sender.sendMessage(Messages.getMessage("Admin-Command.Synchronize.Syncing"));
+			Messages.sendMessage(sender, "Admin-Command.Synchronize.Syncing");
             return CommandType.DEFAULT;
         }
-        sender.sendMessage(Messages.getMessage("Admin-Command.Synchronize.Starting"));
+		Messages.sendMessage(sender, "Admin-Command.Synchronize.Starting");
         FileManager.synchronize(sender);
 		
 		return CommandType.SUCCESS;

@@ -42,7 +42,13 @@ public interface GlobalMarket
      * @param uid 
      */
     public void removeGoods(long uid);
-    
+
+    /**
+     * Clear global market.
+     */
+    public void clearGlobalMarket();
+
+
     /**
      * Save market data
      */

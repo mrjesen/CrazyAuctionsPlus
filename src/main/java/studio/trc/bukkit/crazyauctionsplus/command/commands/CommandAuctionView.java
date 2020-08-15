@@ -22,7 +22,7 @@ public class CommandAuctionView extends VCommand {
 	protected CommandType perform(Main plugin) {
 
 		if (PluginControl.isWorldDisabled(player)) {
-			sender.sendMessage(Messages.getMessage("World-Disabled"));
+			Messages.sendMessage(sender, "World-Disabled");
 			return CommandType.DEFAULT;
 		}
 

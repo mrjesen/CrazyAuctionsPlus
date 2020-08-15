@@ -192,9 +192,9 @@ public class YamlStorage implements Storage {
 			id++;
 			boolean b = false;
 			for (ItemMail im : mailBox) {
-				if (im.getUID() == id) { // 如果有任何一个商品的UID等于变量id，即弃
-					b = true; // 继续执行循环，不break
-					break; // 停止，先+1再说
+				if (im.getUID() == id) {
+					b = true;
+					break;
 				}
 			}
 			if (b)

@@ -6,6 +6,9 @@ import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
 import studio.trc.bukkit.crazyauctionsplus.command.commands.admin.CommandAuctionAdmin;
 import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommandAuction extends VCommand {
 
 	public CommandAuction() {
@@ -24,8 +27,9 @@ public class CommandAuction extends VCommand {
 	@Override
 	protected CommandType perform(Main plugin) {
 
-		sender.sendMessage(Messages.getMessage("CrazyAuctions-Main").replace("{version}",
-				Main.getInstance().getDescription().getVersion()));
+		Map<String, String> placeholders = new HashMap();
+		placeholders.put("%version%", Main.getInstance().getDescription().getVersion());
+		Messages.sendMessage(sender, "CrazyAuctions-Main", placeholders);
 
 		return CommandType.SUCCESS;
 	}

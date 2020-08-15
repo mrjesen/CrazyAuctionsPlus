@@ -23,15 +23,15 @@ public class CommandAuctionAdminItemCollectionAdd extends VCommand {
 	protected CommandType perform(Main plugin) {
 
 		if (player.getItemInHand() == null) {
-			sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Add.Doesnt-Have-Item-In-Hand"));
+			Messages.sendMessage(sender, "Admin-Command.ItemCollection.Add.Doesnt-Have-Item-In-Hand");
 			return CommandType.DEFAULT;
 		}
 		if (ItemCollection.addItem(player.getItemInHand(), argAsString(0))) {
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("%item%", argAsString(0));
-			sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Add.Successfully", map));
+			Map<String, String> placeholders = new HashMap<String, String>();
+			placeholders.put("%item%", argAsString(0));
+			Messages.sendMessage(sender, "Admin-Command.ItemCollection.Add.Successfully", placeholders);
 		} else {
-			sender.sendMessage(Messages.getMessage("Admin-Command.ItemCollection.Add.Already-Exist"));
+			Messages.sendMessage(sender, "Admin-Command.ItemCollection.Add.Already-Exist");
 		}
 
 		return CommandType.SUCCESS;

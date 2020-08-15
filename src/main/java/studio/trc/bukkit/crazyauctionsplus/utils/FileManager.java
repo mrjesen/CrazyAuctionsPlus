@@ -166,14 +166,16 @@ public class FileManager {
             }
             for (CommandSender sender : FileManager.syncSenders) {
                 if (sender != null) {
-                    sender.sendMessage(Messages.getMessage("Admin-Command.Synchronize.Successfully"));
+                    Messages.sendMessage(sender, "Admin-Command.Synchronize.Successfully");
                 }
             }
             syncing = false;
         } catch (Exception ex) {
             for (CommandSender sender : FileManager.syncSenders) {
                 if (sender != null) {
-                    sender.sendMessage(Messages.getMessage("Admin-Command.Synchronize.Failed").replace("%error%", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null"));
+                    Map<String, String> placeholders = new HashMap();
+                    placeholders.put("%error%", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null");
+                    Messages.sendMessage(sender, "Admin-Command.Synchronize.Failed", placeholders);
                 }
             }
             syncing = false;
@@ -185,7 +187,7 @@ public class FileManager {
     public static Runnable backupThread = () -> {
         try {
             backingup = true;
-            String fileName = Messages.getMessage("Admin-Command.Backup.Backup-Name").replace("%date%", new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())) + ".db";
+            String fileName = Messages.getValue("Admin-Command.Backup.Backup-Name").replace("%date%", new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())) + ".db";
             GlobalMarket market = GlobalMarket.getMarket();
             File folder = new File("plugins/CrazyAuctionsPlus/Backup");
             if (!folder.exists()) folder.mkdir();
@@ -293,18 +295,18 @@ public class FileManager {
             }
             for (CommandSender sender : FileManager.backupSenders) {
                 if (sender != null) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("%file%",  fileName);
-                    sender.sendMessage(Messages.getMessage("Admin-Command.Backup.Successfully", map));
+                    Map<String, String> placeholders = new HashMap();
+                    placeholders.put("%file%",  fileName);
+                    Messages.sendMessage(sender, "Admin-Command.Backup.Successfully", placeholders);
                 }
             }
             backingup = false;
         } catch (Exception ex) {
             for (CommandSender sender : FileManager.backupSenders) {
                 if (sender != null) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("%error%",  ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null");
-                    sender.sendMessage(Messages.getMessage("Admin-Command.Backup.Failed", map));
+                    Map<String, String> placeholders = new HashMap();
+                    placeholders.put("%error%",  ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null");
+                    Messages.sendMessage(sender, "Admin-Command.Backup.Failed", placeholders);
                 }
             }
             backingup = false;
@@ -550,8 +552,10 @@ public class FileManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    p.closeInventory();
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (GUI.openingGUI.containsKey(player.getUniqueId())) {
+                        player.closeInventory();
+                    }
                 }
             }
         }.runTask(main);

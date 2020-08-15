@@ -34,7 +34,7 @@ Settings:
         Update-Delay: 5
     Feature-Toggle: #Toggle if a feature is on or off.
         Selling: true #Able to use the selling part of the auction house.
-        Bidding: true #Able to use the bidding part of the auction house.
+        Bidding: false #Able to use the bidding part of the auction house.
         Buying: true #Able to use the buying part of the auction house.
     Disabled-Worlds: #Worlds where the use of this plug-in function is prohibited.
     - exampleworld 
@@ -48,9 +48,9 @@ Settings:
         Parameter: '?useSSL=false&allowMultiQueries=true' #More connection parameters. If you are not a developer and are not familiar with JDBC, please do not modify it.
         Automatic-Repair: -1 #The number of times the system automatically repairs the connection when the database connection is disconnected (-1 is infinite)
         Data-Reacquisition: #If you have multiple servers using the same MySQL, it is recommended to enable it to ensure real-time data synchronization
-            Market: false
-            Item-Mail: false
-            Delay: 5 #Interval (seconds, can have decimals)
+            Market: true
+            Item-Mail: true
+            Delay: 0 #Interval (seconds, can have decimals)
         Table-Name: 
             Market: market
             Item-Mail: itemMail
@@ -618,6 +618,31 @@ Settings:
                     Info:
                         Permission: crazyauctionsplus.command.admin.info
                         Default: false
+                    Market:
+                        Permission: crazyauctionsplus.command.admin.market
+                        Default: false
+                        SubCommands:
+                            Confirm:
+                                Permission: crazyauctionsplus.command.admin.market.confirm
+                                Default: false
+                            Clear:
+                                Permission: crazyauctionsplus.command.admin.market.clear
+                                Default: false
+                            List:
+                                Permission: crazyauctionsplus.command.admin.market.list
+                                Default: false
+                            Repricing:
+                                Permission: crazyauctionsplus.command.admin.market.repricing
+                                Default: false
+                            Delete:
+                                Permission: crazyauctionsplus.command.admin.market.delete
+                                Default: false
+                            Download:
+                                Permission: crazyauctionsplus.command.admin.market.download
+                                Default: false
+                            Upload:
+                                Permission: crazyauctionsplus.command.admin.market.upload
+                                Default: false
                     ItemCollection:
                         Permission: crazyauctionsplus.command.admin.itemcollection
                         Default: false
