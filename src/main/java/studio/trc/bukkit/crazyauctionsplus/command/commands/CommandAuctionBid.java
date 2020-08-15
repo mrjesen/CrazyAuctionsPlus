@@ -123,8 +123,9 @@ public class CommandAuctionBid extends VCommand {
 				type.equals(ShopType.BID)
 						? PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Bid-Time"))
 						: PluginControl
-								.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Sell-Time")),
+						.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Sell-Time")),
 				PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")),
+				System.currentTimeMillis(),
 				price, "None");
 		market.addGoods(goods);
 		Bukkit.getPluginManager().callEvent(new AuctionListEvent(player, type, is, price, tax));
