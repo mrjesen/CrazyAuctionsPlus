@@ -3,8 +3,7 @@ package studio.trc.bukkit.crazyauctionsplus.api.events;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
 
 /**
  * @author TRCRedstoner

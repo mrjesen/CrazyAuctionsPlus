@@ -1,17 +1,5 @@
 package studio.trc.bukkit.crazyauctionsplus.database.storage;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -19,15 +7,19 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.database.Storage;
 import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemMail;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemMail;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class MySQLStorage extends MySQLEngine implements Storage {
-	public static final Map<UUID, MySQLStorage> cache = new HashMap<UUID, MySQLStorage>();
+	public static volatile Map<UUID, MySQLStorage> cache = new HashMap<UUID, MySQLStorage>();
 
 	private static long lastUpdateTime = System.currentTimeMillis();
 
@@ -48,14 +40,20 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 				register(uuid);
 			}
 		} catch (SQLException ex) {
-			if (Main.language.get("MySQL-DataReadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MySQL-DataReadingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			if (Main.language.get("MySQL-DataReadingError") != null)
+				Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MySQL-DataReadingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 			try {
 				if (super.getConnection().isClosed()) {
 					super.repairConnection();
 				}
-			} catch (SQLException ex1) {}
+			} catch (SQLException ex1) {
+				PluginControl.printStackTrace(ex1);
+			}
+			PluginControl.printStackTrace(ex);
 		} catch (InvalidConfigurationException | NullPointerException ex) {
-			if (Main.language.get("PlayerDataFailedToLoad") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("PlayerDataFailedToLoad").replace("{player}", Bukkit.getPlayer(uuid) != null ? Bukkit.getPlayer(uuid).getName() : "null").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			if (Main.language.get("PlayerDataFailedToLoad") != null)
+				Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("PlayerDataFailedToLoad").replace("{player}", Bukkit.getPlayer(uuid) != null ? Bukkit.getPlayer(uuid).getName() : "null").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			PluginControl.printStackTrace(ex);
 		}
 
 		loadData();
@@ -80,11 +78,12 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 								yamlData.get("Items." + path + ".Item") != null
 										? yamlData.getItemStack("Items." + path + ".Item")
 										: new ItemStack(Material.AIR),
-								yamlData.get("Items." + path + ".Full-Time") != null
-										? yamlData.getLong("Items." + path + ".Full-Time") : 0,
-								yamlData.get("Items." + path + ".Never-Expire") != null
-										? yamlData.getBoolean("Items." + path + ".Never-Expire") : false);
+								yamlData.getLong("Items." + path + ".Full-Time"),
+								yamlData.get("Items." + path + ".Added-Time") != null ? yamlData.getLong("Items." + path + ".Added-Time") : -1,
+								yamlData.getBoolean("Items." + path + ".Never-Expire")
+						);
 					} catch (Exception ex) {
+						PluginControl.printStackTrace(ex);
 						continue;
 					}
 					mailBox.add(im);
@@ -133,13 +132,31 @@ public class MySQLStorage extends MySQLEngine implements Storage {
 			statement.setString(1, yaml);
 			executeUpdate(statement);
 		} catch (SQLException ex) {
-			Logger.getLogger(MySQLStorage.class.getName()).log(Level.SEVERE, null, ex);
+			PluginControl.printStackTrace(ex);
 		}
 	}
 
 	@Override
 	public List<ItemMail> getMailBox() {
+		boolean save = false;
+		for (int i = mailBox.size() - 1; i > -1; i--) {
+			if (mailBox.get(i).getItem() == null || mailBox.get(i).getItem().getType().equals(Material.AIR)) {
+				mailBox.remove(i);
+				save = true;
+			}
+		}
+		if (save) saveData();
 		return mailBox;
+	}
+
+	@Override
+	public ItemMail getMail(long uid) {
+		for (ItemMail im : mailBox) {
+			if (im.getUID() == uid) {
+				return im;
+			}
+		}
+		return null;
 	}
 
 	@Override

@@ -4,13 +4,12 @@ import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
 import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
 import java.util.Map;
 
 public class CommandAuctionAdminMarketRepricing extends VCommand {

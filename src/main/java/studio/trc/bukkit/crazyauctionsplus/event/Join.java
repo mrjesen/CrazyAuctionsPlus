@@ -1,26 +1,22 @@
-package studio.trc.bukkit.crazyauctionsplus.events;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
-import studio.trc.bukkit.crazyauctionsplus.utils.Category;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.Files;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.database.Storage;
+package studio.trc.bukkit.crazyauctionsplus.event;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import studio.trc.bukkit.crazyauctionsplus.database.Storage;
+import studio.trc.bukkit.crazyauctionsplus.util.Category;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
 
 public class Join
-    implements Listener
+        implements Listener
 {
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         GUIAction.setCategory(player, Category.getDefaultCategory());
@@ -33,7 +29,7 @@ public class Join
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Join.class.getName()).log(Level.SEVERE, null, ex);
+                PluginControl.printStackTrace(ex);
             }
             if (player == null) return;
             Storage data = Storage.getPlayer(player);

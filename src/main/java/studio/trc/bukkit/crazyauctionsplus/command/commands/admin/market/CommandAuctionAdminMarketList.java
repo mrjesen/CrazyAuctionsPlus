@@ -4,9 +4,9 @@ import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
 import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -18,7 +18,6 @@ public class CommandAuctionAdminMarketList extends VCommand {
     public CommandAuctionAdminMarketList() {
         this.addSubCommand("list");
         this.setPermission("Admin.SubCommands.Market.SubCommands.List");
-        this.setConsoleCanUse(false);
         this.addOptionalArg("page");
     }
 
@@ -32,15 +31,21 @@ public class CommandAuctionAdminMarketList extends VCommand {
         }
         int page = 1;
         try {
-            page = argAsInteger(0,1);
-        } catch (NumberFormatException ex) {}
+            page = argAsInteger(0, 1);
+        } catch (NumberFormatException ex) {
+        }
         int nosp = 9;
         try {
             nosp = Integer.valueOf(Messages.getValue("Admin-Command.Market.List.Number-Of-Single-Page"));
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ex) {
+        }
         StringBuilder formatList = new StringBuilder();
-        for (int i = page * nosp - nosp;i < list.size() && i < page * nosp;i++) {
-            String format = Messages.getValue("Admin-Command.Market.List.Format").replace("%uid%", String.valueOf(list.get(i).getUID())).replace("%money%", String.valueOf(list.get(i).getShopType().equals(ShopType.BUY) ? list.get(i).getReward() : list.get(i).getPrice()));
+        int maxpage = ((int) list.size() / nosp) + 1;
+        if (maxpage < page) {
+            page = maxpage;
+        }
+        for (int i = page * nosp - nosp; i < list.size() && i < page * nosp; i++) {
+            String format = Messages.getValue("Admin-Command.Market.List.Format").replace("%uid%", String.valueOf(list.get(i).getUID())).replace("%money%", String.valueOf(list.get(i).getShopType().equals(ShopType.BUY) ? list.get(i).getReward() : list.get(i).getPrice())).replace("%owner%", list.get(i).getItemOwner().getName());
             try {
                 format = format.replace("%item%", list.get(i).getItem().getItemMeta().hasDisplayName() ? list.get(i).getItem().getItemMeta().getDisplayName() : (String) list.get(i).getItem().getClass().getMethod("getI18NDisplayName").invoke(list.get(i).getItem()));
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
@@ -48,7 +53,6 @@ public class CommandAuctionAdminMarketList extends VCommand {
             }
             formatList.append(format);
         }
-        int maxpage = ((int) list.size() / nosp) + 1;
         Map<String, String> placeholders = new HashMap();
         placeholders.put("%format%", formatList.toString());
         placeholders.put("%page%", String.valueOf(page));

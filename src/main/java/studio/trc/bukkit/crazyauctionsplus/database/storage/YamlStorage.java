@@ -1,16 +1,5 @@
 package studio.trc.bukkit.crazyauctionsplus.database.storage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -18,12 +7,18 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemMail;
 import studio.trc.bukkit.crazyauctionsplus.database.Storage;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemMail;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class YamlStorage implements Storage {
-	public static final Map<UUID, YamlStorage> cache = new HashMap<UUID, YamlStorage>();
+	public static volatile Map<UUID, YamlStorage> cache = new HashMap<UUID, YamlStorage>();
 
 	private final UUID uuid;
 	private final YamlConfiguration config = new YamlConfiguration();
@@ -42,12 +37,14 @@ public class YamlStorage implements Storage {
 			try {
 				dataFile.createNewFile();
 			} catch (IOException ex) {
+				PluginControl.printStackTrace(ex);
 			}
 		}
 		try (InputStreamReader Config = new InputStreamReader(new FileInputStream(dataFile), "UTF-8")) {
 			config.load(Config);
 		} catch (IOException | InvalidConfigurationException ex) {
 			dataFileRepair();
+			PluginControl.printStackTrace(ex);
 		}
 
 		loadData();
@@ -66,12 +63,14 @@ public class YamlStorage implements Storage {
 			try {
 				dataFile.createNewFile();
 			} catch (IOException ex) {
+				PluginControl.printStackTrace(ex);
 			}
 		}
 		try (InputStreamReader Config = new InputStreamReader(new FileInputStream(dataFile), "UTF-8")) {
 			config.load(Config);
 		} catch (IOException | InvalidConfigurationException ex) {
 			dataFileRepair();
+			PluginControl.printStackTrace(ex);
 		}
 
 		loadData();
@@ -89,19 +88,15 @@ public class YamlStorage implements Storage {
 					ItemMail im;
 					try {
 						im = new ItemMail(
-								config.get("Items." + path + ".UID") != null ? config.getLong("Items." + path + ".UID")
-										: Long.valueOf(path),
+								config.get("Items." + path + ".UID") != null ? config.getLong("Items." + path + ".UID") : Long.valueOf(path),
 								Bukkit.getPlayer(uuid),
-								config.get("Items." + path + ".Item") != null
-										? config.getItemStack("Items." + path + ".Item") : new ItemStack(Material.AIR),
-								config.get("Items." + path + ".Full-Time") != null
-										? config.getLong("Items." + path + ".Full-Time") : 0,
-								config.get("Items." + path + ".Never-Expire") != null
-										? config.getBoolean("Items." + path + ".Never-Expire") : false);
-						// im.setUID(config.get("Items." + path + ".UID") !=
-						// null ? config.getLong("Items." + path + ".UID") :
-						// Long.valueOf(path));
+								config.get("Items." + path + ".Item") != null ? config.getItemStack("Items." + path + ".Item") : new ItemStack(Material.AIR),
+								config.getLong("Items." + path + ".Full-Time"),
+								config.get("Items." + path + ".Added-Time") != null ? config.getLong("Items." + path + ".Added-Time") : -1,
+								config.getBoolean("Items." + path + ".Never-Expire")
+						);
 					} catch (Exception ex) {
+						PluginControl.printStackTrace(ex);
 						continue;
 					}
 					mailBox.add(im);
@@ -120,10 +115,12 @@ public class YamlStorage implements Storage {
 		try {
 			dataFile.createNewFile();
 		} catch (IOException ex) {
+			PluginControl.printStackTrace(ex);
 		}
 		try (InputStreamReader Config = new InputStreamReader(new FileInputStream(dataFile), "UTF-8")) {
 			config.load(Config);
 		} catch (IOException | InvalidConfigurationException ex) {
+			PluginControl.printStackTrace(ex);
 		}
 	}
 
@@ -154,6 +151,16 @@ public class YamlStorage implements Storage {
 		if (save)
 			saveData();
 		return mailBox;
+	}
+
+	@Override
+	public ItemMail getMail(long uid) {
+		for (ItemMail im : mailBox) {
+			if (im.getUID() == uid) {
+				return im;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -220,6 +227,7 @@ public class YamlStorage implements Storage {
 		try {
 			config.save("plugins/CrazyAuctionsPlus/Players/" + uuid + ".yml");
 		} catch (IOException ex) {
+			PluginControl.printStackTrace(ex);
 		}
 	}
 

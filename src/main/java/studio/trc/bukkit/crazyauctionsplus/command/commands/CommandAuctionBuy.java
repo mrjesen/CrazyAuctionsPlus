@@ -1,26 +1,25 @@
 package studio.trc.bukkit.crazyauctionsplus.command.commands;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.api.events.AuctionListEvent;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
 import studio.trc.bukkit.crazyauctionsplus.currency.CurrencyManager;
 import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager;
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemOwner;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemOwner;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class CommandAuctionBuy extends VCommand {
 
@@ -43,7 +42,7 @@ public class CommandAuctionBuy extends VCommand {
 		}
 
 		if (!crazyAuctions.isBuyingEnabled()) {
-			Messages.sendMessage(sender, "Buying-Disable");
+			Messages.sendMessage(sender, "Buying-Disabled");
 			return CommandType.DEFAULT;
 		}
 

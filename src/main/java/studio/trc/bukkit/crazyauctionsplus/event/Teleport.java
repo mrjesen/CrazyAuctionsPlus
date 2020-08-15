@@ -1,14 +1,14 @@
-package studio.trc.bukkit.crazyauctionsplus.events;
+package studio.trc.bukkit.crazyauctionsplus.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
 
 public class Teleport
-    implements Listener
+        implements Listener
 {
     @EventHandler(priority = EventPriority.LOWEST)
     public void teleport(PlayerTeleportEvent e) {

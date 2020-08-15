@@ -1,5 +1,15 @@
 package studio.trc.bukkit.crazyauctionsplus.database.market;
 
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import studio.trc.bukkit.crazyauctionsplus.Main;
+import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
+import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemOwner;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,19 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import studio.trc.bukkit.crazyauctionsplus.Main;
-import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemOwner;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
-
 public class SQLiteMarket extends SQLiteEngine implements GlobalMarket {
-	private static final List<MarketGoods> marketgoods = new ArrayList<MarketGoods>();
+	private static volatile List<MarketGoods> marketgoods = new ArrayList<MarketGoods>();
 
 	private static SQLiteMarket instance;
 	private static long lastUpdateTime = System.currentTimeMillis();
@@ -192,7 +191,9 @@ public class SQLiteMarket extends SQLiteEngine implements GlobalMarket {
 				if (getConnection().isClosed())
 					repairConnection();
 			} catch (SQLException ex1) {
+				PluginControl.printStackTrace(ex1);
 			}
+			PluginControl.printStackTrace(ex);
 		}
 	}
 
@@ -223,6 +224,7 @@ public class SQLiteMarket extends SQLiteEngine implements GlobalMarket {
 								yamlMarket.getItemStack("Items." + path + ".Item"),
 								yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
 								yamlMarket.getLong("Items." + path + ".Full-Time"),
+								yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
 								yamlMarket.getDouble("Items." + path + ".Price"));
 						break;
 					}
@@ -232,6 +234,7 @@ public class SQLiteMarket extends SQLiteEngine implements GlobalMarket {
 								yamlMarket.getItemStack("Items." + path + ".Item"),
 								yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
 								yamlMarket.getLong("Items." + path + ".Full-Time"),
+								yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
 								yamlMarket.getDouble("Items." + path + ".Reward"));
 						break;
 					}
@@ -241,6 +244,7 @@ public class SQLiteMarket extends SQLiteEngine implements GlobalMarket {
 								yamlMarket.getItemStack("Items." + path + ".Item"),
 								yamlMarket.getLong("Items." + path + ".Time-Till-Expire"),
 								yamlMarket.getLong("Items." + path + ".Full-Time"),
+								yamlMarket.get("Items." + path + ".Added-Time") != null ? yamlMarket.getLong("Items." + path + ".Added-Time") : -1,
 								yamlMarket.getDouble("Items." + path + ".Price"),
 								yamlMarket.getString("Items." + path + ".TopBidder"));
 						break;
@@ -258,15 +262,21 @@ public class SQLiteMarket extends SQLiteEngine implements GlobalMarket {
 				executeUpdate(createMarket);
 			}
 		} catch (SQLException ex) {
-			if (Main.language.get("SQLite-DataReadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataReadingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			if (Main.language.get("SQLite-DataReadingError") != null)
+				Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataReadingError").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 			try {
 				if (getConnection().isClosed()) {
 					repairConnection();
 					reloadData();
 				}
-			} catch (SQLException ex1) {}
+			} catch (SQLException ex1) {
+				PluginControl.printStackTrace(ex1);
+			}
+			PluginControl.printStackTrace(ex);
 		} catch (InvalidConfigurationException | NullPointerException ex) {
-			if (Main.language.get("MarketDataFailedToLoad") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MarketDataFailedToLoad").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			if (Main.language.get("MarketDataFailedToLoad") != null)
+				Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("MarketDataFailedToLoad").replace("{error}", ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+			PluginControl.printStackTrace(ex);
 		}
 	}
 

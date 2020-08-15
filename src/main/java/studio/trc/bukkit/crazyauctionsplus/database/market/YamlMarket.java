@@ -1,25 +1,22 @@
 package studio.trc.bukkit.crazyauctionsplus.database.market;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.ProtectedConfiguration;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemOwner;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.*;
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemOwner;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
-
 public class YamlMarket implements GlobalMarket {
-	private static final List<MarketGoods> marketgoods = new ArrayList<MarketGoods>();
+	private static volatile List<MarketGoods> marketgoods = new ArrayList<MarketGoods>();
 
 	private static YamlMarket instance;
 
@@ -164,7 +161,9 @@ public class YamlMarket implements GlobalMarket {
 							new ItemOwner(UUID.fromString(owner[1]), owner[0]),
 							data.getItemStack("Items." + path + ".Item"),
 							data.getLong("Items." + path + ".Time-Till-Expire"),
-							data.getLong("Items." + path + ".Full-Time"), data.getDouble("Items." + path + ".Price"));
+							data.getLong("Items." + path + ".Full-Time"),
+							data.get("Items." + path + ".Added-Time") != null ? data.getLong("Items." + path + ".Added-Time") : -1,
+							data.getDouble("Items." + path + ".Price"));
 					break;
 				}
 				case BUY: {
@@ -172,7 +171,9 @@ public class YamlMarket implements GlobalMarket {
 							new ItemOwner(UUID.fromString(owner[1]), owner[0]),
 							data.getItemStack("Items." + path + ".Item"),
 							data.getLong("Items." + path + ".Time-Till-Expire"),
-							data.getLong("Items." + path + ".Full-Time"), data.getDouble("Items." + path + ".Reward"));
+							data.getLong("Items." + path + ".Full-Time"),
+							data.get("Items." + path + ".Added-Time") != null ? data.getLong("Items." + path + ".Added-Time") : -1,
+							data.getDouble("Items." + path + ".Reward"));
 					break;
 				}
 				case BID: {
@@ -180,7 +181,9 @@ public class YamlMarket implements GlobalMarket {
 							new ItemOwner(UUID.fromString(owner[1]), owner[0]),
 							data.getItemStack("Items." + path + ".Item"),
 							data.getLong("Items." + path + ".Time-Till-Expire"),
-							data.getLong("Items." + path + ".Full-Time"), data.getDouble("Items." + path + ".Price"),
+							data.getLong("Items." + path + ".Full-Time"),
+							data.get("Items." + path + ".Added-Time") != null ? data.getLong("Items." + path + ".Added-Time") : -1,
+							data.getDouble("Items." + path + ".Price"),
 							data.getString("Items." + path + ".TopBidder"));
 					break;
 				}
@@ -200,6 +203,7 @@ public class YamlMarket implements GlobalMarket {
 				new FileInputStream(new File("plugins/CrazyAuctionsPlus/Database.yml")), "UTF-8")) {
 			config.load(reader);
 		} catch (IOException | InvalidConfigurationException ex) {
+			PluginControl.printStackTrace(ex);
 		}
 		return config;
 	}

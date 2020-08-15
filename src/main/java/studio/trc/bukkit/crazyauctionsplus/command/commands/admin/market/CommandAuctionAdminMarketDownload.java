@@ -5,8 +5,9 @@ import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
 import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
 import studio.trc.bukkit.crazyauctionsplus.database.StorageMethod;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,18 +35,18 @@ public class CommandAuctionAdminMarketDownload extends VCommand {
             return CommandType.SUCCESS;
         }
         if (marketConfirm.containsKey(sender) && marketConfirm.get(sender).equalsIgnoreCase("ca admin market download")) {
-            String fileName = Messages.getValue("Admin-Command.Market.Download.File-Name").replace("%date%", new SimpleDateFormat("yyyy-MM-hh-HH-mm-ss").format(new Date())) + ".yml";
-            File dir = new File("plugins/CrazyAuctionsPlus/Download/");
-            if (!dir.exists()) {
-                dir.mkdir();
+            String fileName = FileManager.Files.CONFIG.getFile().getString("Settings.Upload.Market").replace("%date%", new SimpleDateFormat("yyyy-MM-hh-HH-mm-ss").format(new Date())) + ".yml";
+            File file = new File(fileName);
+            if (file.getParent() != null) {
+                new File(file.getParent()).mkdirs();
             }
-            File yamlFile = new File(dir, fileName);
-            if (!yamlFile.exists()) {
+            if (!file.exists()) {
                 try {
-                    yamlFile.createNewFile();
-                } catch (IOException ex) {}
+                    file.createNewFile();
+                } catch (IOException ex) {
+                }
             }
-            try (OutputStream out = new FileOutputStream(yamlFile)) {
+            try (OutputStream out = new FileOutputStream(file)) {
                 out.write(market.getYamlData().saveToString().getBytes());
             } catch (IOException ex) {
                 Map<String, String> placeholders = new HashMap();
@@ -55,7 +56,7 @@ public class CommandAuctionAdminMarketDownload extends VCommand {
                 return CommandType.SUCCESS;
             }
             Map<String, String> placeholders = new HashMap();
-            placeholders.put("%path%", "plugins/CrazyAuctionsPlus/Download/" + fileName);
+            placeholders.put("%path%", fileName);
             Messages.sendMessage(sender, "Admin-Command.Market.Download.Succeeded", placeholders);
             marketConfirm.remove(sender);
             return CommandType.SUCCESS;

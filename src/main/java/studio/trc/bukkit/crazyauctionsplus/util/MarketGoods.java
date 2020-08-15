@@ -1,11 +1,10 @@
-package studio.trc.bukkit.crazyauctionsplus.utils;
+package studio.trc.bukkit.crazyauctionsplus.util;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
-
 import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.Files;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
 
 /**
  * For processing goods on the market.
@@ -17,6 +16,7 @@ public class MarketGoods {
 	private double reward = 0;
 
 	private final ShopType shoptype;
+	private final long addedTime;
 	private final long fullTime;
 	private final ItemOwner owner;
 	private final ItemStack item;
@@ -24,28 +24,26 @@ public class MarketGoods {
 
 	@Override
 	public String toString() {
-		return "[MarketGoods] -> [UID=" + uid + ", Owner=" + owner + ", FullTime=" + fullTime + ", TimeTillExpire="
-				+ timeTillExpire + ", ShopType=" + shoptype.getName() + ", Price=" + price + ", Reward=" + reward
-				+ ", TopBidder=" + topBidder + ", Item=" + item + "]";
+		return "[MarketGoods] -> [UID=" + uid + ", Owner=" + owner + ", FullTime=" + fullTime + ", TimeTillExpire=" + timeTillExpire + ", AddedTime=" + addedTime + ", ShopType=" + shoptype.getName() + ", Price=" + price + ", Reward=" + reward + ", TopBidder=" + topBidder + ", Item=" + item + "]";
 	}
 
-	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire,
-			long fullTime) {
+	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime, long addedTime) {
 		this.shoptype = shoptype;
 		this.owner = owner;
 		this.item = item;
 		this.timeTillExpire = timeTillExpire;
 		this.fullTime = fullTime;
+		this.addedTime = addedTime;
 		this.uid = uid;
 	}
 
-	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime,
-			double money) {
+	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime, long addedTime, double money) {
 		this.shoptype = shoptype;
 		this.owner = owner;
 		this.item = item;
 		this.timeTillExpire = timeTillExpire;
 		this.fullTime = fullTime;
+		this.addedTime = addedTime;
 		this.uid = uid;
 		if (shoptype.equals(ShopType.SELL) || shoptype.equals(ShopType.BID)) {
 			price = money;
@@ -54,25 +52,25 @@ public class MarketGoods {
 		}
 	}
 
-	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime,
-			double price, String topBidder) {
+	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime, long addedTime, double price, String topBidder) {
 		this.shoptype = shoptype;
 		this.owner = owner;
 		this.item = item;
 		this.timeTillExpire = timeTillExpire;
 		this.fullTime = fullTime;
+		this.addedTime = addedTime;
 		this.price = price;
 		this.topBidder = topBidder;
 		this.uid = uid;
 	}
 
-	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime,
-			double price, OfflinePlayer topBidder) {
+	public MarketGoods(long uid, ShopType shoptype, ItemOwner owner, ItemStack item, long timeTillExpire, long fullTime, long addedTime, double price, OfflinePlayer topBidder) {
 		this.shoptype = shoptype;
 		this.owner = owner;
 		this.item = item;
 		this.timeTillExpire = timeTillExpire;
 		this.fullTime = fullTime;
+		this.addedTime = addedTime;
 		this.price = price;
 		this.topBidder = topBidder.getName() + ":" + topBidder.getUniqueId();
 		this.uid = uid;
@@ -80,7 +78,6 @@ public class MarketGoods {
 
 	/**
 	 * Get the OfflinePlayer instance of the Top Bidder.
-	 * 
 	 * @return
 	 */
 	public String getTopBidder() {
@@ -89,7 +86,6 @@ public class MarketGoods {
 
 	/**
 	 * Get product type
-	 * 
 	 * @return
 	 */
 	public ShopType getShopType() {
@@ -98,7 +94,6 @@ public class MarketGoods {
 
 	/**
 	 * Get the price of an item
-	 * 
 	 * @return
 	 */
 	public double getPrice() {
@@ -107,7 +102,6 @@ public class MarketGoods {
 
 	/**
 	 * Get paid for goods
-	 * 
 	 * @return
 	 */
 	public double getReward() {
@@ -116,7 +110,6 @@ public class MarketGoods {
 
 	/**
 	 * Get Time Till Expire.
-	 * 
 	 * @return
 	 */
 	public long getTimeTillExpire() {
@@ -125,7 +118,6 @@ public class MarketGoods {
 
 	/**
 	 * Get Full Time
-	 * 
 	 * @return
 	 */
 	public long getFullTime() {
@@ -134,17 +126,19 @@ public class MarketGoods {
 
 	/**
 	 * Get added time
-	 * 
 	 * @return
 	 */
 	public long getAddedTime() {
-		return fullTime - (PluginControl.convertToMill(Files.CONFIG.getFile().getString("Settings.Full-Expire-Time"))
-				- System.currentTimeMillis());
+		if (addedTime == -1) {
+			return fullTime - (PluginControl.convertToMill(Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")) - System.currentTimeMillis());
+		} else {
+			return addedTime;
+		}
 	}
 
 	/**
 	 * Get the UID of an item.
-	 * 
+	 *
 	 * @return
 	 */
 	public long getUID() {
@@ -152,8 +146,18 @@ public class MarketGoods {
 	}
 
 	/**
+	 * Whether the product has expired.
+	 * This method is usually called by automatic update detection.
+	 *
+	 * @return
+	 */
+	public boolean expired() {
+		return System.currentTimeMillis() >= timeTillExpire;
+	}
+
+	/**
 	 * Get item.
-	 * 
+	 *
 	 * @return
 	 */
 	public ItemStack getItem() {
@@ -162,7 +166,6 @@ public class MarketGoods {
 
 	/**
 	 * Get Item's owner.
-	 * 
 	 * @return
 	 */
 	public ItemOwner getItemOwner() {
@@ -171,21 +174,18 @@ public class MarketGoods {
 
 	/**
 	 * Repricing.
-	 * 
 	 * @param money
 	 */
 	public void repricing(double money) {
 		switch (shoptype) {
-		case BUY: {
-			reward = money;
-			break;
-		}
-		case SELL: {
-			price = money;
-			break;
-		}
-		default:
-			break;
+			case BUY: {
+				reward = money;
+				break;
+			}
+			case SELL: {
+				price = money;
+				break;
+			}
 		}
 	}
 

@@ -1,4 +1,4 @@
-package studio.trc.bukkit.crazyauctionsplus.utils.enums;
+package studio.trc.bukkit.crazyauctionsplus.util.enums;
 
 public enum CancelledReason
 {

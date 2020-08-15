@@ -1,12 +1,11 @@
-package studio.trc.bukkit.crazyauctionsplus.utils;
+package studio.trc.bukkit.crazyauctionsplus.util;
+
+import org.bukkit.inventory.ItemStack;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.ProtectedConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.inventory.ItemStack;
-
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.Files;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.ProtectedConfiguration;
 
 public class ItemCollection {
 	private final ItemStack is;
@@ -32,13 +31,11 @@ public class ItemCollection {
 	}
 
 	public static boolean addItem(ItemStack item, String displayName) {
-		if (displayName == null)
-			return false;
+		if (displayName == null) return false;
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null
-						&& ic.get("ItemCollection." + items + ".Item") != null) {
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
 					if (item.getItemMeta().equals(ic.getItemStack("ItemCollection." + items + ".Item").getItemMeta())) {
 						return false;
 					}
@@ -65,8 +62,7 @@ public class ItemCollection {
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null && ic
-						.getItemStack("ItemCollection." + items + ".Item").getItemMeta().equals(item.getItemMeta())) {
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.getItemStack("ItemCollection." + items + ".Item").getItemMeta().equals(item.getItemMeta())) {
 					ic.set("ItemCollection." + items, null);
 					Files.ITEMCOLLECTION.saveFile();
 					return true;
@@ -82,8 +78,7 @@ public class ItemCollection {
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null
-						&& ic.getLong("ItemCollection." + items + ".UID") == uid) {
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.getLong("ItemCollection." + items + ".UID") == uid) {
 					ic.set("ItemCollection." + items, null);
 					Files.ITEMCOLLECTION.saveFile();
 					return true;
@@ -96,8 +91,7 @@ public class ItemCollection {
 	}
 
 	public static boolean deleteItem(String displayName) {
-		if (displayName == null)
-			return false;
+		if (displayName == null) return false;
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
@@ -120,30 +114,26 @@ public class ItemCollection {
 			id++;
 			boolean b = false;
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null
-						&& ic.get("ItemCollection." + items + ".Item") != null) {
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
 					if (ic.getLong("ItemCollection." + items + ".UID") == id) {
 						b = true;
 						break;
 					}
 				}
 			}
-			if (b)
-				continue;
+			if (b) continue;
 			break;
 		}
 		return id;
 	}
 
 	public static List<ItemCollection> getCollection() {
-		List<ItemCollection> list = new ArrayList<ItemCollection>();
+		List<ItemCollection> list = new ArrayList();
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null
-						&& ic.get("ItemCollection." + items + ".Item") != null) {
-					list.add(new ItemCollection(ic.getItemStack("ItemCollection." + items + ".Item"),
-							ic.getLong("ItemCollection." + items + ".UID"), items));
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
+					list.add(new ItemCollection(ic.getItemStack("ItemCollection." + items + ".Item"), ic.getLong("ItemCollection." + items + ".UID"), items));
 				}
 			}
 			return list;
@@ -155,11 +145,9 @@ public class ItemCollection {
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null
-						&& ic.get("ItemCollection." + items + ".Item") != null) {
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
 					if (ic.getLong("ItemCollection." + items + ".UID") == uid) {
-						return new ItemCollection(ic.getItemStack("ItemCollection." + items + ".Item"),
-								ic.getLong("ItemCollection." + items + ".UID"), items);
+						return new ItemCollection(ic.getItemStack("ItemCollection." + items + ".Item"), ic.getLong("ItemCollection." + items + ".UID"), items);
 					}
 				}
 			}
@@ -171,11 +159,9 @@ public class ItemCollection {
 		ProtectedConfiguration ic = Files.ITEMCOLLECTION.getFile();
 		if (ic.get("ItemCollection") != null) {
 			for (String items : ic.getConfigurationSection("ItemCollection").getKeys(false)) {
-				if (ic.get("ItemCollection." + items + ".UID") != null
-						&& ic.get("ItemCollection." + items + ".Item") != null) {
+				if (ic.get("ItemCollection." + items + ".UID") != null && ic.get("ItemCollection." + items + ".Item") != null) {
 					if (displayName.equalsIgnoreCase(items)) {
-						return new ItemCollection(ic.getItemStack("ItemCollection." + items + ".Item"),
-								ic.getLong("ItemCollection." + items + ".UID"), items);
+						return new ItemCollection(ic.getItemStack("ItemCollection." + items + ".Item"), ic.getLong("ItemCollection." + items + ".UID"), items);
 					}
 				}
 			}

@@ -1,5 +1,25 @@
 package studio.trc.bukkit.crazyauctionsplus;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import studio.trc.bukkit.crazyauctionsplus.command.CommandManager;
+import studio.trc.bukkit.crazyauctionsplus.currency.Vault;
+import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
+import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
+import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
+import studio.trc.bukkit.crazyauctionsplus.database.storage.MySQLStorage;
+import studio.trc.bukkit.crazyauctionsplus.database.storage.SQLiteStorage;
+import studio.trc.bukkit.crazyauctionsplus.event.*;
+import studio.trc.bukkit.crazyauctionsplus.util.CrazyAuctions;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl.ReloadType;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl.RollBackMethod;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -8,32 +28,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import studio.trc.bukkit.crazyauctionsplus.command.CommandManager;
-import studio.trc.bukkit.crazyauctionsplus.currency.Vault;
-import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
-import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
-import studio.trc.bukkit.crazyauctionsplus.database.storage.MySQLStorage;
-import studio.trc.bukkit.crazyauctionsplus.database.storage.SQLiteStorage;
-import studio.trc.bukkit.crazyauctionsplus.events.AuctionEvents;
-import studio.trc.bukkit.crazyauctionsplus.events.EasyCommand;
-import studio.trc.bukkit.crazyauctionsplus.events.GUIAction;
-import studio.trc.bukkit.crazyauctionsplus.events.Join;
-import studio.trc.bukkit.crazyauctionsplus.events.Quit;
-import studio.trc.bukkit.crazyauctionsplus.events.ShopSign;
-import studio.trc.bukkit.crazyauctionsplus.utils.CrazyAuctions;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl.ReloadType;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl.RollBackMethod;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
 
 public class Main extends JavaPlugin {
 
@@ -192,9 +186,10 @@ public class Main extends JavaPlugin {
 					if (language.get("CacheUpdateError") != null)
 						getServer().getConsoleSender().sendMessage(language.getProperty("CacheUpdateError")
 								.replace("{error}",
-										ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "Unknown reason")
+										ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : "null")
 								.replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 					fault = true;
+					PluginControl.printStackTrace(ex);
 				}
 			}
 		});

@@ -1,27 +1,27 @@
-package studio.trc.bukkit.crazyauctionsplus.events;
-
-import java.lang.reflect.InvocationTargetException;
+package studio.trc.bukkit.crazyauctionsplus.event;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
 import studio.trc.bukkit.crazyauctionsplus.api.events.AuctionListEvent;
 import studio.trc.bukkit.crazyauctionsplus.api.events.AuctionNewBidEvent;
 import studio.trc.bukkit.crazyauctionsplus.api.events.AuctionWinBidEvent;
-import studio.trc.bukkit.crazyauctionsplus.utils.AuctionProcess;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.ProtectedConfiguration;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.Files;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
+import studio.trc.bukkit.crazyauctionsplus.util.AuctionProcess;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.ProtectedConfiguration;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class AuctionEvents
     extends AuctionProcess
     implements Listener
 {
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void starting(AuctionListEvent e) {
         if (!e.getShopType().equals(ShopType.BID)) return;
         Player p = e.getPlayer();
@@ -38,8 +38,8 @@ public class AuctionEvents
             }
         }
     }
-    
-    @EventHandler
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void bidding(AuctionNewBidEvent e) {
         Player p = e.getPlayer();
         ProtectedConfiguration config = Files.CONFIG.getFile();
@@ -56,8 +56,8 @@ public class AuctionEvents
             }
         }
     }
-    
-    @EventHandler
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void ending(AuctionWinBidEvent e) {
         Player p = e.getPlayer();
         ProtectedConfiguration config = Files.CONFIG.getFile();
@@ -74,8 +74,8 @@ public class AuctionEvents
             }
         }
     }
-    
-    @EventHandler
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void newBid(AuctionNewBidEvent e) {
         Player p = e.getPlayer();
         ProtectedConfiguration config = Files.CONFIG.getFile();
@@ -100,7 +100,9 @@ public class AuctionEvents
                         }
                         break;
                     }
-                } catch (NumberFormatException ex) {}
+                } catch (NumberFormatException ex) {
+                    PluginControl.printStackTrace(ex);
+                }
             }
         }
     }

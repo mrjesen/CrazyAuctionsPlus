@@ -1,18 +1,14 @@
 package studio.trc.bukkit.crazyauctionsplus.database.engine;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.database.DatabaseEngine;
 import studio.trc.bukkit.crazyauctionsplus.database.StorageMethod;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
 
 public class SQLiteEngine
     implements DatabaseEngine
@@ -41,6 +37,7 @@ public class SQLiteEngine
         try {
             return rs.next();
         } catch (SQLException ex) {
+            PluginControl.printStackTrace(ex);
             return false;
         }
     }
@@ -57,6 +54,7 @@ public class SQLiteEngine
         try {
             return rs.next();
         } catch (SQLException ex) {
+            PluginControl.printStackTrace(ex);
             return false;
         }
     }
@@ -70,6 +68,7 @@ public class SQLiteEngine
         try {
             return rs.next();
         } catch (SQLException ex) {
+            PluginControl.printStackTrace(ex);
             return false;
         }
     }
@@ -130,7 +129,9 @@ public class SQLiteEngine
                 if (!connection.isClosed()) {
                     connection.close();
                 }
-            } catch (SQLException ex) {}
+            } catch (SQLException ex) {
+                PluginControl.printStackTrace(ex);
+            }
             connectToTheDatabase();
             databaseReloading = false;
         }
@@ -157,13 +158,16 @@ public class SQLiteEngine
             } catch (SQLException ex) {
                 if (Main.language.get("SQLite-DataTableCreationFailed") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataTableCreationFailed").replace("{prefix}", PluginControl.getPrefix()).replace("{error}", ex.getLocalizedMessage()).replace("&", "§"));
                 FileManager.Files.CONFIG.getFile().set("Settings.SQLite-Storage.Enabled", false);
+                PluginControl.printStackTrace(ex);
             }
         } catch (ClassNotFoundException ex) {
             if (Main.language.get("SQLite-NoDriverFound") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-NoDriverFound").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             FileManager.Files.CONFIG.getFile().set("Settings.SQLite-Storage.Enabled", false);
+            PluginControl.printStackTrace(ex);
         } catch (SQLException ex) {
             if (Main.language.get("SQLite-ConnectionError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-ConnectionError").replace("{prefix}", PluginControl.getPrefix()).replace("{error}", ex.getLocalizedMessage()).replace("&", "§"));
             FileManager.Files.CONFIG.getFile().set("Settings.SQLite-Storage.Enabled", false);
+            PluginControl.printStackTrace(ex);
         }
     }
 
@@ -184,6 +188,7 @@ public class SQLiteEngine
                         if (Main.language.get("SQLite-BeyondRepair") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-BeyondRepair").replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
                         break;
                     }
+                    PluginControl.printStackTrace(ex);
                 }
             }
         }, "SQLite-ConnectionRepairThread").start();
@@ -195,10 +200,14 @@ public class SQLiteEngine
         try {
             statement.executeUpdate();
         }  catch (SQLException ex) {
-            if (Main.language.get("SQLite-DataSavingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataSavingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+            if (Main.language.get("SQLite-DataSavingError") != null)
+                Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataSavingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             try {
                 if (getConnection().isClosed()) repairConnection();
-            } catch (SQLException ex1) {}
+            } catch (SQLException ex1) {
+                PluginControl.printStackTrace(ex1);
+            }
+            PluginControl.printStackTrace(ex);
         }
     }
 
@@ -209,10 +218,14 @@ public class SQLiteEngine
         try {
             connection.createStatement().executeUpdate(sql);
         } catch (SQLException ex) {
-            if (Main.language.get("SQLite-DataSavingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataSavingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+            if (Main.language.get("SQLite-DataSavingError") != null)
+                Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataSavingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             try {
                 if (getConnection().isClosed()) repairConnection();
-            } catch (SQLException ex1) {}
+            } catch (SQLException ex1) {
+                PluginControl.printStackTrace(ex1);
+            }
+            PluginControl.printStackTrace(ex);
         }
     }
 
@@ -222,10 +235,14 @@ public class SQLiteEngine
         try {
             return statement.executeQuery();
         } catch (SQLException ex) {
-            if (Main.language.get("SQLite-DataReadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataReadingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+            if (Main.language.get("SQLite-DataReadingError") != null)
+                Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataReadingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             try {
                 if (getConnection().isClosed()) repairConnection();
-            } catch (SQLException ex1) {}
+            } catch (SQLException ex1) {
+                PluginControl.printStackTrace(ex1);
+            }
+            PluginControl.printStackTrace(ex);
         }
         return null;
     }
@@ -237,10 +254,14 @@ public class SQLiteEngine
         try {
             return connection.createStatement().executeQuery(sql);
         } catch (SQLException ex) {
-            if (Main.language.get("SQLite-DataReadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataReadingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
+            if (Main.language.get("SQLite-DataReadingError") != null)
+                Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-DataReadingError").replace("{error}", ex.getLocalizedMessage()).replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
             try {
                 if (getConnection().isClosed()) repairConnection();
-            } catch (SQLException ex1) {}
+            } catch (SQLException ex1) {
+                PluginControl.printStackTrace(ex1);
+            }
+            PluginControl.printStackTrace(ex);
         }
         return null;
     }

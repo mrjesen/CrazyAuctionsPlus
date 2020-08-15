@@ -1,36 +1,36 @@
-package studio.trc.bukkit.crazyauctionsplus.utils;
+package studio.trc.bukkit.crazyauctionsplus.util;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.meta.ItemMeta;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.ProtectedConfiguration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.*;
-
 public class Category {
-    
-    public static final List<Category> collection = new ArrayList<Category>();
-    
+
+    public static final List<Category> collection = new ArrayList();
+
     private final String name;
     private final List<Material> items;
     private final List<ItemMeta> itemMeta;
     private final String displayName;
     private final boolean whitelist;
-    
+
     /**
      * @param name Name of the Shop Type.
      */
     private Category(String name, List<Material> items) {
         this.name = name;
         this.items = items;
-        itemMeta = new ArrayList<ItemMeta>();
+        itemMeta = new ArrayList();
         displayName = Files.CATEGORY.getFile().getString("Category." + name + ".Display-Name");
         whitelist = Files.CATEGORY.getFile().getBoolean("Category." + name + ".Whitelist");
     }
-    
+
     private Category(String name, List<Material> items, List<ItemMeta> itemMeta) {
         this.name = name;
         this.items = items;
@@ -38,16 +38,17 @@ public class Category {
         displayName = Files.CATEGORY.getFile().getString("Category." + name + ".Display-Name");
         whitelist = Files.CATEGORY.getFile().getBoolean("Category." + name + ".Whitelist");
     }
-    
+
     /**
      * Get Category's instance.
+     *
      * @param moduleName Module name in Category.yml.
-     * @return 
+     * @return
      */
     public static Category getModule(String moduleName) {
         if (moduleName == null) return null;
-        List<Material> materialList = new ArrayList<Material>();
-        List<ItemMeta> metaList = new ArrayList<ItemMeta>();
+        List<Material> materialList = new ArrayList();
+        List<ItemMeta> metaList = new ArrayList();
         ProtectedConfiguration cat = Files.CATEGORY.getFile();
         if (cat.get("Category") != null) {
             if (cat.get("Category." + moduleName) == null) {
@@ -58,7 +59,9 @@ public class Category {
                     try {
                         Material m = Material.matchMaterial(name);
                         materialList.add(m);
-                    } catch (Exception ex) {}
+                    } catch (Exception ex) {
+                        PluginControl.printStackTrace(ex);
+                    }
                 }
             }
             if (cat.get("Category." + moduleName + ".Modules") != null) {
@@ -77,6 +80,7 @@ public class Category {
                     } catch (NumberFormatException ex) {
                         ItemCollection ic = ItemCollection.getItemCollection(items);
                         if (ic != null) metaList.add(ic.getItem().getItemMeta());
+                        PluginControl.printStackTrace(ex);
                     }
                 }
             }
@@ -86,6 +90,7 @@ public class Category {
                     try {
                         method = Material.class.getMethod(methods);
                     } catch (NoSuchMethodException | SecurityException ex) {
+                        PluginControl.printStackTrace(ex);
                         continue;
                     }
                     for (Material materials : Material.values()) {
@@ -94,14 +99,16 @@ public class Category {
                             if (value) {
                                 materialList.add(materials);
                             }
-                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {}
+                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                            PluginControl.printStackTrace(ex);
+                        }
                     }
                 }
             }
             if (cat.getBoolean("Category." + moduleName + ".Whitelist")) {
                 return new Category(moduleName, materialList, metaList);
             } else {
-                List<Material> newList = new ArrayList<Material>();
+                List<Material> newList = new ArrayList();
                 for (Material m : Material.values()) {
                     if (!materialList.contains(m)) {
                         newList.add(m);
@@ -113,9 +120,9 @@ public class Category {
             return null;
         }
     }
-    
+
     public static List<String> getModuleNameList() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList();
         ProtectedConfiguration cat = Files.CATEGORY.getFile();
         if (cat.get("Category") != null) {
             for (String name : cat.getConfigurationSection("Category").getKeys(false)) {
@@ -126,7 +133,7 @@ public class Category {
             return list;
         }
     }
-    
+
     public static Category getDefaultCategory() {
         ProtectedConfiguration cat = Files.CATEGORY.getFile();
         if (cat.get("Default-Category") != null) {
@@ -134,9 +141,9 @@ public class Category {
         }
         return null;
     }
-    
+
     public static List<Category> getCategoryModules() {
-        List<Category> list = new ArrayList<Category>();
+        List<Category> list = new ArrayList();
         for (String name : getModuleNameList()) {
             Category module = getModule(name);
             if (module != null) {
@@ -145,27 +152,27 @@ public class Category {
         }
         return list;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public String getDisplayName() {
         return displayName;
     }
-    
+
     public List<Material> getItems() {
         return items;
     }
-    
+
     public List<ItemMeta> getAllItemMeta() {
         return itemMeta;
     }
-    
+
     public boolean isWhitelist() {
         return whitelist;
     }
-    
+
     @Override
     public String toString() {
         return "[Category] -> [Name:" + name + ", DisplayName:" + (displayName != null ? displayName : "") + "]";

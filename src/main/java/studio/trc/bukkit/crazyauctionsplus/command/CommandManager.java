@@ -1,29 +1,23 @@
 package studio.trc.bukkit.crazyauctionsplus.command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.*;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import studio.trc.bukkit.crazyauctionsplus.Main;
+import studio.trc.bukkit.crazyauctionsplus.command.commands.CommandAuction;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemCollection;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import studio.trc.bukkit.crazyauctionsplus.Main;
-import studio.trc.bukkit.crazyauctionsplus.command.commands.CommandAuction;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager;
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemCollection;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
 

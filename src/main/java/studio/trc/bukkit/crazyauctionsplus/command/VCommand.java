@@ -1,17 +1,16 @@
 package studio.trc.bukkit.crazyauctionsplus.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import studio.trc.bukkit.crazyauctionsplus.Main;
-import studio.trc.bukkit.crazyauctionsplus.utils.Arguments;
-import studio.trc.bukkit.crazyauctionsplus.utils.CrazyAuctions;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Version;
+import studio.trc.bukkit.crazyauctionsplus.util.Arguments;
+import studio.trc.bukkit.crazyauctionsplus.util.CrazyAuctions;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Version;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public abstract class VCommand extends Arguments {

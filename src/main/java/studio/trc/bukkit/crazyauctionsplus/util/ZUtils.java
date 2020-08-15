@@ -1,8 +1,8 @@
-package studio.trc.bukkit.crazyauctionsplus.utils;
-
-import java.util.Arrays;
+package studio.trc.bukkit.crazyauctionsplus.util;
 
 import org.bukkit.Material;
+
+import java.util.Arrays;
 
 public abstract class ZUtils {
 

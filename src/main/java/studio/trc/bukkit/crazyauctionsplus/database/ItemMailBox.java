@@ -1,25 +1,35 @@
 package studio.trc.bukkit.crazyauctionsplus.database;
 
+import studio.trc.bukkit.crazyauctionsplus.util.ItemMail;
+
 import java.util.List;
 
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemMail;
-
-public interface ItemMailBox
-{
+public interface ItemMailBox {
     /**
      * Get the player's item mailbox
-     * @return 
+     *
+     * @return
      */
     public List<ItemMail> getMailBox();
-    
+
+    /**
+     * Get Item Mail on mailbox.
+     *
+     * @param uid item mail's uid
+     * @return
+     */
+    public ItemMail getMail(long uid);
+
     /**
      * Add new item mail to player's mailbox
-     * @param im 
+     *
+     * @param im
      */
     public void addItem(ItemMail... im);
-    
+
     /**
      * Remove the specified item email from the player's item mailbox
+     *
      * @param im
      */
     public void removeItem(ItemMail... im);

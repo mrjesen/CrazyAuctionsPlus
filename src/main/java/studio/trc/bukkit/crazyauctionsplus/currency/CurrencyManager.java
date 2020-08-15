@@ -1,12 +1,11 @@
 package studio.trc.bukkit.crazyauctionsplus.currency;
 
-import java.util.UUID;
-
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.Files;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+
+import java.util.UUID;
 
 public enum CurrencyManager {
     

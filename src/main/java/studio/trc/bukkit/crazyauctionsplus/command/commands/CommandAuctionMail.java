@@ -3,9 +3,9 @@ package studio.trc.bukkit.crazyauctionsplus.command.commands;
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
-import studio.trc.bukkit.crazyauctionsplus.events.GUIAction;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.event.GUIAction;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
 
 public class CommandAuctionMail extends VCommand {
 

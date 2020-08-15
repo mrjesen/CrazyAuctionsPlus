@@ -1,14 +1,14 @@
-package studio.trc.bukkit.crazyauctionsplus.utils.enums;
+package studio.trc.bukkit.crazyauctionsplus.util.enums;
 
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.*;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import org.bukkit.command.CommandSender;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.ProtectedConfiguration;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-
-import org.bukkit.command.CommandSender;
 
 public enum Messages {
     
@@ -162,7 +162,7 @@ public enum Messages {
         } else {
             for (String message : messages) {
                 for (String ph : placeholders.keySet()) {
-                    message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase()).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n");
+                    message = PluginControl.color(message.replace(ph, placeholders.get(ph)).replace("{prefix}", PluginControl.getPrefix())).replace("/n", "\n");
                 }
                 sender.sendMessage(message);
             }
@@ -212,7 +212,7 @@ public enum Messages {
                     continue;
                 }
                 for (String ph : placeholders.keySet()) {
-                    message = PluginControl.color(message.replaceAll(ph, placeholders.get(ph))).replaceAll(ph, placeholders.get(ph).toLowerCase()).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n");
+                    message = PluginControl.color(message.replace(ph, placeholders.get(ph)).replace("{prefix}", PluginControl.getPrefix())).replace("/n", "\n");
                 }
                 sender.sendMessage(message);
             }

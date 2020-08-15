@@ -1,15 +1,14 @@
 package studio.trc.bukkit.crazyauctionsplus.database;
 
-import java.util.UUID;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
 import studio.trc.bukkit.crazyauctionsplus.database.storage.MySQLStorage;
 import studio.trc.bukkit.crazyauctionsplus.database.storage.SQLiteStorage;
 import studio.trc.bukkit.crazyauctionsplus.database.storage.YamlStorage;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
+import java.util.UUID;
 
 public interface Storage
     extends ItemMailBox

@@ -1,4 +1,4 @@
-package studio.trc.bukkit.crazyauctionsplus.utils;
+package studio.trc.bukkit.crazyauctionsplus.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;

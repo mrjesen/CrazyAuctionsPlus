@@ -1,13 +1,12 @@
 package studio.trc.bukkit.crazyauctionsplus.api.events;
 
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.ShopType;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.CancelledReason;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.CancelledReason;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.ShopType;
 
 /**
  *

@@ -1,15 +1,14 @@
 package studio.trc.bukkit.crazyauctionsplus.command.commands.admin.collections;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.entity.Player;
-
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
-import studio.trc.bukkit.crazyauctionsplus.utils.ItemCollection;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.ItemCollection;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandAuctionAdminItemCollectionGive extends VCommand {
 

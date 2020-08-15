@@ -1,14 +1,13 @@
 package studio.trc.bukkit.crazyauctionsplus.database;
 
-import java.util.List;
-
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import studio.trc.bukkit.crazyauctionsplus.database.market.MySQLMarket;
 import studio.trc.bukkit.crazyauctionsplus.database.market.SQLiteMarket;
 import studio.trc.bukkit.crazyauctionsplus.database.market.YamlMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.MarketGoods;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.MarketGoods;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
+import java.util.List;
 
 public interface GlobalMarket
 {

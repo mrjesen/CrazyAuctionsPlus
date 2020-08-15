@@ -1,12 +1,12 @@
 package studio.trc.bukkit.crazyauctionsplus.database;
 
+import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
+import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
-import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
 
 public interface DatabaseEngine
 {

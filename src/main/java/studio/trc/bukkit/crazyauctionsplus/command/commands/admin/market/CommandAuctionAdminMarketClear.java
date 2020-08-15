@@ -1,11 +1,10 @@
 package studio.trc.bukkit.crazyauctionsplus.command.commands.admin.market;
 
-import org.bukkit.Bukkit;
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
 import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
 
 import static studio.trc.bukkit.crazyauctionsplus.command.commands.admin.market.CommandAuctionAdminMarket.marketConfirm;
 

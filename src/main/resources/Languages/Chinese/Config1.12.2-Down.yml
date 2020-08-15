@@ -22,29 +22,39 @@ Settings:
     Max-Beginning-Buy-Reward: 1000000
     Minimum-Bid-Price: 1
     Max-Beginning-Bid-Price: 1000000
-    #是否启用自动备份， 每一次关闭服务器时都会自动备份一次储存数据
+  #数据库下载文件相关设置
+    Download:
+      Market: 'plugins/CrazyAuctionsPlus/Download/全球市场-%date%.yml'
+      PlayerData: 'plugins/CrazyAuctionsPlus/Download/Player/%player%-%uuid%.yml'
+  #数据库上传文件相关设置
+    Upload:
+      Market: 'plugins/CrazyAuctionsPlus/Database.yml'
+      PlayerData: 'plugins/CrazyAuctionsPlus/Player/%uuid%.yml'
+  #是否启用自动备份， 每一次关闭服务器时都会自动备份一次储存数据
     Automatic-Backup: false
-    #全球市场自动刷新
-    #PS: 默认情况下， 玩家每一次打开市场都会刷新一次数据
-    #    如果你选择的储存方式是SQLite，我们不建议你启用这个功能
+  #全球市场自动刷新
+  #PS: 默认情况下， 玩家每一次打开市场都会刷新一次数据
+  #    如果你选择的储存方式是SQLite，我们不建议你启用这个功能
     Global-Market-Automatic-Update:
-        Enabled: true
-        #刷新间隔时间（秒，可以有小数）
-        Update-Delay: 5
-    #重定价超时时间（秒）
+      Enabled: true
+      #刷新间隔时间（秒，可以有小数）
+      Update-Delay: 5
+  #重定价超时时间（秒）
     Repricing-Timeout: 30
-    #是否在玩家登入的时候提示是否有新的物品邮件
+  #是否在玩家发起新拍卖时向服务器里所有玩家发送信息提示
+    Auction-Starts-Broadcast: true
+  #是否在玩家登入的时候提示是否有新的物品邮件
     Join-Message: true
-    #是否允许损坏的物品上架
+  #是否允许损坏的物品上架
     Allow-Damaged-Items: false
-    #是否在使用主命令时，打开的是商品筛选界面而不是市场主界面
+  #是否在使用主命令时，打开的是商品筛选界面而不是市场主界面
     Category-Page-Opens-First: false
-    #收购物品时，是否匹配买家物品和卖家的物品NBT是否一致
-    #如果该选项关闭，双方物品仅需材质一致即可达成交易
+  #收购物品时，是否匹配买家物品和卖家的物品NBT是否一致
+  #如果该选项关闭，双方物品仅需材质一致即可达成交易
     Item-NBT-comparison: true
     Feature-Toggle:
         Selling: true
-        Bidding: false
+        Bidding: true
         Buying: true
     #禁止使用本插件功能的世界
     Disabled-Worlds:
@@ -63,7 +73,7 @@ Settings:
         #数据库名称
         Database: 'crazyauctionsplus'
         #更多连接参数，如果你不是一名开发者，并且不熟知JDBC，请不要修改它
-        Parameter: '?useSSL=false&allowMultiQueries=true'
+        Parameter: '?useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8'
         #当数据库连接丢失时，自动修复的次数， 填-1即为无数次
         Automatic-Repair: -1
         #数据重新获取
@@ -670,48 +680,76 @@ Settings:
                         Permission: crazyauctionsplus.command.admin.rollback
                         Default: false
                     Backup:
-                        Permission: crazyauctionsplus.command.admin.backup
-                        Default: false
+                      Permission: crazyauctionsplus.command.admin.backup
+                      Default: false
                     Synchronize:
-                        Permission: crazyauctionsplus.command.admin.synchronize
-                        Default: false
+                      Permission: crazyauctionsplus.command.admin.synchronize
+                      Default: false
                     Info:
-                        Permission: crazyauctionsplus.command.admin.info
-                        Default: false
+                      Permission: crazyauctionsplus.command.admin.info
+                      Default: false
+                    PrintStackTrace:
+                      Permission: crazyauctionsplus.command.admin.printstacktrace
+                      Default: false
                     Market:
-                        Permission: crazyauctionsplus.command.admin.market
-                        Default: false
-                        SubCommands:
-                            Confirm:
-                                Permission: crazyauctionsplus.command.admin.market.confirm
-                                Default: false
-                            Clear:
-                                Permission: crazyauctionsplus.command.admin.market.clear
-                                Default: false
+                      Permission: crazyauctionsplus.command.admin.market
+                      Default: false
+                      SubCommands:
+                        Confirm:
+                          Permission: crazyauctionsplus.command.admin.market.confirm
+                          Default: false
+                        Clear:
+                          Permission: crazyauctionsplus.command.admin.market.clear
+                          Default: false
                             List:
                                 Permission: crazyauctionsplus.command.admin.market.list
                                 Default: false
                             Repricing:
-                                Permission: crazyauctionsplus.command.admin.market.repricing
-                                Default: false
-                            Delete:
-                                Permission: crazyauctionsplus.command.admin.market.delete
-                                Default: false
-                            Download:
-                                Permission: crazyauctionsplus.command.admin.market.download
-                                Default: false
-                            Upload:
-                                Permission: crazyauctionsplus.command.admin.market.upload
-                                Default: false
+                              Permission: crazyauctionsplus.command.admin.market.repricing
+                              Default: false
+                        Delete:
+                          Permission: crazyauctionsplus.command.admin.market.delete
+                          Default: false
+                        Download:
+                          Permission: crazyauctionsplus.command.admin.market.download
+                          Default: false
+                        Upload:
+                          Permission: crazyauctionsplus.command.admin.market.upload
+                          Default: false
+                    Player:
+                      Permission: crazyauctionsplus.command.admin.player
+                      Default: false
+                      SubCommands:
+                        Confirm:
+                          Permission: crazyauctionsplus.command.admin.player.confirm
+                          Default: false
+                        Clear:
+                          Permission: crazyauctionsplus.command.admin.player.clear
+                          Default: false
+                        List:
+                          Permission: crazyauctionsplus.command.admin.player.list
+                          Default: false
+                        View:
+                          Permission: crazyauctionsplus.command.admin.player.view
+                          Default: false
+                        Delete:
+                          Permission: crazyauctionsplus.command.admin.player.delete
+                          Default: false
+                        Download:
+                          Permission: crazyauctionsplus.command.admin.player.download
+                          Default: false
+                        Upload:
+                          Permission: crazyauctionsplus.command.admin.player.upload
+                          Default: false
                     ItemCollection:
-                        Permission: crazyauctionsplus.command.admin.itemcollection
-                        Default: false
-                        SubCommands:
-                            Add: 
-                                Permission: crazyauctionsplus.command.admin.itemcollection.add
-                                Default: false
-                            Delete: 
-                                Permission: crazyauctionsplus.command.admin.itemcollection.delete
+                      Permission: crazyauctionsplus.command.admin.itemcollection
+                      Default: false
+                      SubCommands:
+                        Add:
+                          Permission: crazyauctionsplus.command.admin.itemcollection.add
+                          Default: false
+                        Delete:
+                          Permission: crazyauctionsplus.command.admin.itemcollection.delete
                                 Default: false
                             List:
                                 Permission: crazyauctionsplus.command.admin.itemcollection.list

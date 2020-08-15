@@ -1,16 +1,12 @@
 package studio.trc.bukkit.crazyauctionsplus.database.engine;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.database.DatabaseEngine;
 import studio.trc.bukkit.crazyauctionsplus.database.StorageMethod;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.*;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+
+import java.sql.*;
 
 public class MySQLEngine implements DatabaseEngine {
 	private static final MySQLEngine instance = new MySQLEngine();
@@ -42,6 +38,7 @@ public class MySQLEngine implements DatabaseEngine {
 		try {
 			return rs.next();
 		} catch (SQLException ex) {
+			PluginControl.printStackTrace(ex);
 			return false;
 		}
 	}
@@ -59,6 +56,7 @@ public class MySQLEngine implements DatabaseEngine {
 		try {
 			return rs.next();
 		} catch (SQLException ex) {
+			PluginControl.printStackTrace(ex);
 			return false;
 		}
 	}
@@ -73,6 +71,7 @@ public class MySQLEngine implements DatabaseEngine {
 		try {
 			return rs.next();
 		} catch (SQLException ex) {
+			PluginControl.printStackTrace(ex);
 			return false;
 		}
 	}
@@ -131,6 +130,7 @@ public class MySQLEngine implements DatabaseEngine {
 							connection.close();
 						}
 					} catch (SQLException ex) {
+						PluginControl.printStackTrace(ex);
 					}
 				}, "Closing-Thread");
 				closing.start();
@@ -145,6 +145,7 @@ public class MySQLEngine implements DatabaseEngine {
 				connectToTheDatabase();
 				databaseReloading = false;
 			} catch (InterruptedException ex) {
+				PluginControl.printStackTrace(ex);
 			}
 	}
 
@@ -177,6 +178,7 @@ public class MySQLEngine implements DatabaseEngine {
 									.replace("{prefix}", PluginControl.getPrefix())
 									.replace("{error}", ex.getLocalizedMessage()).replace("&", "§"));
 				Files.CONFIG.getFile().set("Settings.MySQL-Storage.Enabled", false);
+				PluginControl.printStackTrace(ex);
 			}
 		} catch (ClassNotFoundException ex) {
 			if (Main.language.get("MySQL-NoDriverFound") != null)
@@ -184,6 +186,7 @@ public class MySQLEngine implements DatabaseEngine {
 						.sendMessage(Main.language.getProperty("MySQL-NoDriverFound")
 								.replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 			Files.CONFIG.getFile().set("Settings.MySQL-Storage.Enabled", false);
+			PluginControl.printStackTrace(ex);
 		} catch (SQLException ex) {
 			if (Main.language.get("MySQL-ConnectionError") != null)
 				Main.getInstance().getServer().getConsoleSender()
@@ -191,6 +194,7 @@ public class MySQLEngine implements DatabaseEngine {
 								.replace("{prefix}", PluginControl.getPrefix())
 								.replace("{error}", ex.getLocalizedMessage()).replace("&", "§"));
 			Files.CONFIG.getFile().set("Settings.MySQL-Storage.Enabled", false);
+			PluginControl.printStackTrace(ex);
 		}
 	}
 
@@ -222,6 +226,7 @@ public class MySQLEngine implements DatabaseEngine {
 											.replace("{prefix}", PluginControl.getPrefix()).replace("&", "§"));
 						break;
 					}
+					PluginControl.printStackTrace(ex);
 				}
 			}
 		}, "MySQLConnectionRepairThread").start();
@@ -246,7 +251,9 @@ public class MySQLEngine implements DatabaseEngine {
 					if (getConnection().isClosed())
 						repairConnection();
 				} catch (SQLException ex1) {
+					PluginControl.printStackTrace(ex1);
 				}
+				PluginControl.printStackTrace(ex);
 			}
 		}, "MySQLExecuteUpdateThread").start();
 	}
@@ -271,7 +278,9 @@ public class MySQLEngine implements DatabaseEngine {
 					if (getConnection().isClosed())
 						repairConnection();
 				} catch (SQLException ex1) {
+					PluginControl.printStackTrace(ex1);
 				}
+				PluginControl.printStackTrace(ex);
 			}
 		}, "MySQLExecuteUpdateThread").start();
 	}
@@ -294,7 +303,9 @@ public class MySQLEngine implements DatabaseEngine {
 				if (getConnection().isClosed())
 					repairConnection();
 			} catch (SQLException ex1) {
+				PluginControl.printStackTrace(ex1);
 			}
+			PluginControl.printStackTrace(ex);
 		}
 		return null;
 	}
@@ -318,7 +329,9 @@ public class MySQLEngine implements DatabaseEngine {
 				if (getConnection().isClosed())
 					repairConnection();
 			} catch (SQLException ex1) {
+				PluginControl.printStackTrace(ex1);
 			}
+			PluginControl.printStackTrace(ex);
 		}
 		return null;
 	}

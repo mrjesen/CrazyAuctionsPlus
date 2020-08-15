@@ -6,16 +6,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import studio.trc.bukkit.crazyauctionsplus.Main;
 import studio.trc.bukkit.crazyauctionsplus.command.CommandType;
 import studio.trc.bukkit.crazyauctionsplus.command.VCommand;
-import studio.trc.bukkit.crazyauctionsplus.database.GlobalMarket;
 import studio.trc.bukkit.crazyauctionsplus.database.StorageMethod;
 import studio.trc.bukkit.crazyauctionsplus.database.engine.MySQLEngine;
 import studio.trc.bukkit.crazyauctionsplus.database.engine.SQLiteEngine;
-import studio.trc.bukkit.crazyauctionsplus.utils.PluginControl;
-import studio.trc.bukkit.crazyauctionsplus.utils.enums.Messages;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager;
+import studio.trc.bukkit.crazyauctionsplus.util.PluginControl;
+import studio.trc.bukkit.crazyauctionsplus.util.enums.Messages;
 
 import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,11 +37,11 @@ public class CommandAuctionAdminMarketUpload extends VCommand {
             return CommandType.SUCCESS;
         }
         if (marketConfirm.containsKey(sender) && marketConfirm.get(sender).equalsIgnoreCase("ca admin market upload")) {
-            String fileName = Messages.getValue("Admin-Command.Market.Upload.File-Name") + ".yml";
-            File file = new File("plugins/CrazyAuctionsPlus/", fileName);
+            String fileName = FileManager.Files.CONFIG.getFile().getString("Settings.Upload.Market").replace("%date%", new SimpleDateFormat("yyyy-MM-hh-HH-mm-ss").format(new Date()));
+            File file = new File(fileName);
             if (!file.exists()) {
                 Map<String, String> placeholders = new HashMap();
-                placeholders.put("%file%", "plugins/CrazyAuctionsPlus/" + Messages.getValue("Admin-Command.Market.Upload.File-Name") + ".yml");
+                placeholders.put("%file%", fileName);
                 Messages.sendMessage(sender, "Admin-Command.Market.Upload.File-Not-Exist", placeholders);
                 marketConfirm.remove(sender);
                 return CommandType.SUCCESS;

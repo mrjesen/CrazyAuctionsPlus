@@ -1,7 +1,7 @@
-package studio.trc.bukkit.crazyauctionsplus.utils;
+package studio.trc.bukkit.crazyauctionsplus.util;
 
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.Files;
-import studio.trc.bukkit.crazyauctionsplus.utils.FileManager.ProtectedConfiguration;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.Files;
+import studio.trc.bukkit.crazyauctionsplus.util.FileManager.ProtectedConfiguration;
 
 public class MarketGroup
 {
