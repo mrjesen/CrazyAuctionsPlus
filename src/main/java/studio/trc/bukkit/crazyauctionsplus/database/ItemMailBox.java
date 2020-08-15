@@ -22,14 +22,12 @@ public interface ItemMailBox {
 
     /**
      * Add new item mail to player's mailbox
-     *
-     * @param im
+     * @param im 
      */
     public void addItem(ItemMail... im);
-
+    
     /**
      * Remove the specified item email from the player's item mailbox
-     *
      * @param im
      */
     public void removeItem(ItemMail... im);

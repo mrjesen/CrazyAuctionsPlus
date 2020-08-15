@@ -141,16 +141,16 @@ public enum Messages {
             }
         }
     }
-    
 
     /**
      * Send message to command sender.
-     * @param sender Command sender.
-     * @param path Messages.yml's path
+     *
+     * @param sender       Command sender.
+     * @param path         Messages.yml's path
      * @param placeholders If the text contains a placeholder,
-     *                      The placeholder will be replaced with the specified text.
+     *                     The placeholder will be replaced with the specified text.
      */
-    public static void sendMessage(CommandSender sender, String path, Map<String, String> placeholders){
+    public static void sendMessage(CommandSender sender, String path, Map<String, String> placeholders) {
         if (sender == null) return;
         List<String> messages = Files.MESSAGES.getFile().getStringList(Files.CONFIG.getFile().getString("Settings.Language") + "." + path);
         if (messages.isEmpty()) {
@@ -218,11 +218,11 @@ public enum Messages {
             }
         }
     }
-
+    
     public static String getValue(String path) {
         return PluginControl.color(Files.MESSAGES.getFile().getString(Files.CONFIG.getFile().getString("Settings.Language") + "." + path).replace("{prefix}", PluginControl.getPrefix()).replace("/n", "\n"));
     }
-
+    
     public static List<String> getValueList(String path) {
         List<String> list = new ArrayList();
         ProtectedConfiguration config = Files.CONFIG.getFile();

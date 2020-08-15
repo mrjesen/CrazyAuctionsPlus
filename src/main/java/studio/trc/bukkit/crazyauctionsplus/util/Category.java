@@ -80,7 +80,6 @@ public class Category {
                     } catch (NumberFormatException ex) {
                         ItemCollection ic = ItemCollection.getItemCollection(items);
                         if (ic != null) metaList.add(ic.getItem().getItemMeta());
-                        PluginControl.printStackTrace(ex);
                     }
                 }
             }

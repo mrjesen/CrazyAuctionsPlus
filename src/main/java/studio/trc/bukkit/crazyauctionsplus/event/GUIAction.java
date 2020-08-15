@@ -40,7 +40,7 @@ public class GUIAction
 
     public final static Map<UUID, Object[]> repricing = new HashMap();
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler
     public void onInvClose(InventoryCloseEvent e) {
         if (openingGUI.containsKey(e.getPlayer().getUniqueId())) {
             openingGUI.remove(e.getPlayer().getUniqueId());
@@ -55,7 +55,7 @@ public class GUIAction
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInvClick(InventoryClickEvent e) {
         if (!openingGUI.containsKey(e.getWhoClicked().getUniqueId())) {
             return;
@@ -694,7 +694,6 @@ public class GUIAction
                                         Bukkit.getPluginManager().callEvent(event);
                                         Storage playerdata = Storage.getPlayer(mg.getItemOwner().getUUID());
                                         playerdata.addItem(new ItemMail(playerdata.makeUID(), mg.getItemOwner().getUUID(), mg.getItem(), PluginControl.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")), System.currentTimeMillis(), false));
-
                                         market.removeGoods(uid);
                                         playClick(player);
                                         openPlayersCurrentList(player, 1);

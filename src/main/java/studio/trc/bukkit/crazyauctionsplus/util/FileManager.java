@@ -163,8 +163,8 @@ public class FileManager {
                     Messages.sendMessage(sender, "Admin-Command.Synchronize.Failed", placeholders);
                 }
             }
-            PluginControl.printStackTrace(ex);
             syncing = false;
+            PluginControl.printStackTrace(ex);
         }
     };
 
@@ -298,8 +298,8 @@ public class FileManager {
                     Messages.sendMessage(sender, "Admin-Command.Backup.Failed", placeholders);
                 }
             }
-            PluginControl.printStackTrace(ex);
             backingup = false;
+            PluginControl.printStackTrace(ex);
         }
     };
 
@@ -442,6 +442,7 @@ public class FileManager {
             }
             newFile.renameTo(oldFile);
             saveResource(file);
+            PluginControl.printStackTrace(ex);
             try (Reader newConfig = new InputStreamReader(new FileInputStream(newFile))) {
                 FileConfiguration config = new YamlConfiguration();
                 config.load(newConfig);
@@ -464,15 +465,18 @@ public class FileManager {
             FileConfiguration config = new YamlConfiguration();
             config.load(Config);
             configurations.put(file, config);
-            if (Main.language.get("ConfigurationFileLoadedSuccessfully") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("ConfigurationFileLoadedSuccessfully").replace("{file}", newFile.getName()).replace("{prefix}", prefix).replace("&", "§"));
+            if (Main.language.get("ConfigurationFileLoadedSuccessfully") != null)
+                Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("ConfigurationFileLoadedSuccessfully").replace("{file}", newFile.getName()).replace("{prefix}", prefix).replace("&", "§"));
         } catch (IOException | InvalidConfigurationException ex) {
-            if (Main.language.get("ConfigurationFileLoadingError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("ConfigurationFileLoadingError").replace("{file}", newFile.getName()).replace("{prefix}", prefix).replace("&", "§"));
+            if (Main.language.get("ConfigurationFileLoadingError") != null)
+                Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("ConfigurationFileLoadingError").replace("{file}", newFile.getName()).replace("{prefix}", prefix).replace("&", "§"));
             File oldFile = new File(main.getDataFolder(), newFile.getName() + ".old");
             if (oldFile.exists()) {
                 oldFile.delete();
             }
             newFile.renameTo(oldFile);
             saveResource(file);
+            PluginControl.printStackTrace(ex);
             try (Reader newConfig = new InputStreamReader(new FileInputStream(newFile))) {
                 FileConfiguration config = new YamlConfiguration();
                 config.load(newConfig);
@@ -502,6 +506,7 @@ public class FileManager {
             }
             newFile.renameTo(oldFile);
             saveResource(file);
+            PluginControl.printStackTrace(ex);
             try (Reader newConfig = new InputStreamReader(new FileInputStream(newFile))) {
                 FileConfiguration config = new YamlConfiguration();
                 config.load(newConfig);
@@ -531,6 +536,7 @@ public class FileManager {
             }
             newFile.renameTo(oldFile);
             saveResource(file);
+            PluginControl.printStackTrace(ex);
             try (Reader newConfig = new InputStreamReader(new FileInputStream(newFile))) {
                 FileConfiguration config = new YamlConfiguration();
                 config.load(newConfig);
@@ -602,6 +608,7 @@ public class FileManager {
                 }
                 newFile.renameTo(oldFile);
                 saveResource(file);
+                PluginControl.printStackTrace(ex);
                 try (Reader newConfig = new InputStreamReader(new FileInputStream(newFile))) {
                     FileConfiguration config = new YamlConfiguration();
                     config.load(newConfig);
@@ -750,6 +757,7 @@ public class FileManager {
             configurations.get(file).save(files.get(file));
         } catch (IOException e) {
             System.out.println(prefix + "Could not save " + file.getFileName() + "!");
+            e.printStackTrace();
             PluginControl.printStackTrace(e);
         }
     }

@@ -53,13 +53,13 @@ Settings:
   #如果该选项关闭，双方物品仅需材质一致即可达成交易
     Item-NBT-comparison: true
     Feature-Toggle:
-        Selling: true
-        Bidding: true
-        Buying: true
-    #禁止使用本插件功能的世界
+      Selling: true
+      Bidding: true
+      Buying: true
+  #禁止使用本插件功能的世界
     Disabled-Worlds:
-    - exampleworld
-    #MySQL 数据库设置
+      - exampleworld
+  #MySQL 数据库设置
     MySQL-Storage:
         Enabled: false
         #主机名
@@ -701,12 +701,12 @@ Settings:
                         Clear:
                           Permission: crazyauctionsplus.command.admin.market.clear
                           Default: false
-                            List:
-                                Permission: crazyauctionsplus.command.admin.market.list
-                                Default: false
-                            Repricing:
-                              Permission: crazyauctionsplus.command.admin.market.repricing
-                              Default: false
+                        List:
+                          Permission: crazyauctionsplus.command.admin.market.list
+                          Default: false
+                        Repricing:
+                          Permission: crazyauctionsplus.command.admin.market.repricing
+                          Default: false
                         Delete:
                           Permission: crazyauctionsplus.command.admin.market.delete
                           Default: false
@@ -750,10 +750,10 @@ Settings:
                           Default: false
                         Delete:
                           Permission: crazyauctionsplus.command.admin.itemcollection.delete
-                                Default: false
-                            List:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.list
-                                Default: false
-                            Give:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.give
-                                Default: false
+                          Default: false
+                        List:
+                          Permission: crazyauctionsplus.command.admin.itemcollection.list
+                          Default: false
+                        Give:
+                          Permission: crazyauctionsplus.command.admin.itemcollection.give
+                          Default: false

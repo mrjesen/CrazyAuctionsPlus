@@ -15,8 +15,8 @@ import java.util.UUID;
 public class ItemMail {
     private final UUID uuid;
     private final ItemStack is;
-    private final long fullTime;
     private final long addedTime;
+    private final long fullTime;
     private final boolean neverExpire;
     private final long uid;
 
@@ -58,7 +58,6 @@ public class ItemMail {
 
     /**
      * Get full time.
-     *
      * @return
      */
     public long getFullTime() {
@@ -68,17 +67,14 @@ public class ItemMail {
     /**
      * Whether the mail has expired.
      * This method is usually called by automatic update detection.
-     *
      * @return
      */
     public boolean expired() {
         return System.currentTimeMillis() >= fullTime;
     }
 
-
     /**
      * Get creation time.
-     *
      * @return
      */
     public long getAddedTime() {

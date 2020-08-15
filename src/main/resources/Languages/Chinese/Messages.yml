@@ -64,7 +64,7 @@ Chinese:
     CrazyAuctions-Sell: '{prefix}&c你的命令有误， 正确使用方法: /Ca sell [价格] [数量]'
     CrazyAuctions-Bid: '{prefix}&c你的命令有误， 正确使用方法: /Ca bid [价格] [数量]'
     CrazyAuctions-Buy: '{prefix}&c你的命令有误， 正确使用方法: /Ca buy [报酬] [数量] [物品]'
-    CrazyAuctions-Main: '{prefix}&6插件所运行的版本: &a%version% &6, 由&cBadBones69&6,&cMaxlego08&6与&cTRCRedstoner&7(TRC Studio)&6制作。'
+    CrazyAuctions-Main: '{prefix}&6插件所运行的版本: &a%version% &6, 由&cBadBones69&6与&cTRCRedstoner&7(TRC Studio)&6制作。'
     Date-Settings:
         Second: 秒
         Minute: 分钟
@@ -130,31 +130,31 @@ Chinese:
             - ' &3/Ca Admin Market Repricing [商品UID] [价格] &c- &a修改指定的商品的价格'
             - ' &3/Ca Admin Market Download &c- &a将全部商品数据下载到本地目录（仅数据库模式）'
             - ' &3/Ca Admin Market Upload &c- &a将本地文件数据上传到数据库（仅数据库模式）'
-                - '&e▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
-            Confirm:
-                Confirm: '{prefix}&6请使用命令 &e/ca admin market confirm &6以确认执行此操作'
-                Invalid: '{prefix}&c没有待确认的操作。'
-            List:
-                Number-Of-Single-Page: 9
-                Format: '&6UID: &b%uid% &2- &r%item% &2- &e%money% ￥ &2- &6%owner%/n'
-                Empty: '{prefix}&a全球市场中没有商品。'
-                Messages:
-                    - '{prefix}&e商品列表 &a%page%&7/&a%maxpage% 页'
+            - '&e▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+          Confirm:
+            Confirm: '{prefix}&6请使用命令 &e/ca admin market confirm &6以确认执行此操作'
+            Invalid: '{prefix}&c没有待确认的操作。'
+          List:
+            Number-Of-Single-Page: 9
+            Format: '&6UID: &b%uid% &2- &r%item% &2- &e%money% ￥ &2- &6%owner%/n'
+            Empty: '{prefix}&a全球市场中没有商品。'
+            Messages:
+              - '{prefix}&e商品列表 &a%page%&7/&a%maxpage% 页'
                     - '&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
                     - '%format%'
                     - '&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
                     - '&a使用命令 &c/ca admin market list %nextpage% &a查看下一页{hasnext}'
             Clear: '{prefix}&c已清空全球市场。'
-            Repricing:
-                Help: '{prefix}&c正确使用方式: &e/ca admin market repricing [商品UID] [价格]'
-                Not-Exist: '{prefix}&cUID &e%uid% &c的商品不存在！'
-                Not-A-Valid-Number: '{prefix}&c%arg% 不是一个有效的数字。'
-                Succeeded: '{prefix}&a你已将物品 &r%item% &7(UID:%uid%) &a的价格/报酬重定价为 &e%money% ￥ &a.'
-            Delete:
-                Help: '{prefix}&c正确使用方式: &e/ca admin market delete [商品UID]'
-                Not-Exist: '{prefix}&cUID &e%uid% &c的商品不存在！'
-                Not-A-Valid-Number: '{prefix}&c%arg% 不是一个有效的数字。'
-                Succeeded: '{prefix}&a成功删除商品 &r%item% &7(UID:%uid%) &a.'
+          Repricing:
+            Help: '{prefix}&c正确使用方式: &e/ca admin market repricing [商品UID] [价格]'
+            Not-Exist: '{prefix}&cUID &e%uid% &c的商品不存在！'
+            Not-A-Valid-Number: '{prefix}&c%arg% 不是一个有效的数字。'
+            Succeeded: '{prefix}&a你已将物品 &r%item% &7(UID:%uid%) &a的价格/报酬重定价为 &e%money% ￥ &a.'
+          Delete:
+            Help: '{prefix}&c正确使用方式: &e/ca admin market delete [商品UID]'
+            Not-Exist: '{prefix}&cUID &e%uid% &c的商品不存在！'
+            Not-A-Valid-Number: '{prefix}&c%arg% 不是一个有效的数字。'
+            Succeeded: '{prefix}&a成功删除商品 &r%item% &7(UID:%uid%) &a.'
           Download:
             Only-Database-Mode: '{prefix}&e只有启用了数据库模式才可以执行此操作！'
             Succeeded: '{prefix}&a成功将全球市场的所有数据下载到本地目录 &e%path% &a。'
@@ -233,8 +233,8 @@ Chinese:
           Starting: '{prefix}&a开始回档， 这可能需要较长时间...'
           RollingBack: '{prefix}&e插件正在回档中， 请勿执行此操作。'
           Failed: '{prefix}&c回档失败， 遇到错误: &e%error% 。'
-            Successfully: '{prefix}&a已运行备份文件 &e%file% &a， 所有储存数据已回档。'
-            Backup-Not-Exist: '{prefix}&c备份文件 &e%file% &c不存在。'
+          Successfully: '{prefix}&a已运行备份文件 &e%file% &a， 所有储存数据已回档。'
+          Backup-Not-Exist: '{prefix}&c备份文件 &e%file% &c不存在。'
         ItemCollection:
             Help:
                 - '&e▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
@@ -401,7 +401,7 @@ English:
     CrazyAuctions-Sell: '{prefix}&c/Ca sell <price> [amount of items]'
     CrazyAuctions-Bid: '{prefix}&c/Ca bid <price> [amount of items]'
     CrazyAuctions-Buy: '{prefix}&c/Ca buy <reward> [amount of items] [item name]'
-    CrazyAuctions-Main: '{prefix}&6Plug-in version running: &a%version% &6, Written and produced by &cBadBones69&6, &cMaxlego08 &6and &cTRCRedstoner &7(TRC Studio)&6.'
+    CrazyAuctions-Main: '{prefix}&6Plug-in version running: &a%version% &6, Written and produced by &cBadBones69 &6and &cTRCRedstoner &7(TRC Studio)&6.'
     Date-Settings:
         Second: second
         Minute: minute
@@ -467,36 +467,36 @@ English:
             - ' &3/Ca Admin Market Repricing [UID] [Money] &c- &aModify the price of the specified product'
             - ' &3/Ca Admin Market Download &c- &aDownload all product data (database mode only)'
             - ' &3/Ca Admin Market Upload &c- &aUpload local file data to the database (database mode only)'
-                - '&e▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
-            Confirm:
-                Confirm: '{prefix}&6Use command &e/ca admin market confirm &6to confirm'
-                Invalid: '{prefix}&cThere are no pending operations.'
-            List:
-                Number-Of-Single-Page: 9
-                Format: '&6UID: &b%uid% &2- &r%item% &2- &e$%money% &2- &6%owner%/n'
-                Empty: '{prefix}&aThe global market is empty.'
-                Messages:
-                    - '{prefix}&eList &a%page%&7/&a%maxpage%'
+            - '&e▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
+          Confirm:
+            Confirm: '{prefix}&6Use command &e/ca admin market confirm &6to confirm'
+            Invalid: '{prefix}&cThere are no pending operations.'
+          List:
+            Number-Of-Single-Page: 9
+            Format: '&6UID: &b%uid% &2- &r%item% &2- &e$%money% &2- &6%owner%/n'
+            Empty: '{prefix}&aThe global market is empty.'
+            Messages:
+              - '{prefix}&eList &a%page%&7/&a%maxpage%'
                     - '&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
                     - '%format%'
                     - '&7▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'
                     - '&aUse command &c/ca admin market list %nextpage% &ato view the next page{hasnext}'
             Clear: '{prefix}&cThe global market has been clear.'
-            Repricing:
-                Help: '{prefix}&cUse: &e/ca admin market repricing [UID] [Money]'
-                Not-Exist: '{prefix}&cUID &e%uid% &cnot exists!'
-                Not-A-Valid-Number: '{prefix}&c%arg% is not a valid number.'
-                Succeeded: '{prefix}&aYou have re-priced the item &r%item% &7(UID:%uid%) &a to &e$%money% &a.'
-            Delete:
-                Help: '{prefix}&cUse: &e/ca admin market delete [UID]'
-                Not-Exist: '{prefix}&cUID &e%uid% &cnot exists!'
-                Not-A-Valid-Number: '{prefix}&c%arg% is not a valid number.'
-                Succeeded: '{prefix}&aYou deleted item &r%item% &7(UID:%uid%) &a.'
-            Download:
-              File-Name: 'GlobalMarket %date%'
-              Only-Database-Mode: '{prefix}&eThis operation can only be performed in the database mode!'
-              Succeeded: '{prefix}&aSuccessfully downloaded all the data of the global market to the local directory &e%path% &a.'
-              Failed: '{prefix}&cDownload failed! Error: &e%error%'
+          Repricing:
+            Help: '{prefix}&cUse: &e/ca admin market repricing [UID] [Money]'
+            Not-Exist: '{prefix}&cUID &e%uid% &cnot exists!'
+            Not-A-Valid-Number: '{prefix}&c%arg% is not a valid number.'
+            Succeeded: '{prefix}&aYou have re-priced the item &r%item% &7(UID:%uid%) &a to &e$%money% &a.'
+          Delete:
+            Help: '{prefix}&cUse: &e/ca admin market delete [UID]'
+            Not-Exist: '{prefix}&cUID &e%uid% &cnot exists!'
+            Not-A-Valid-Number: '{prefix}&c%arg% is not a valid number.'
+            Succeeded: '{prefix}&aYou deleted item &r%item% &7(UID:%uid%) &a.'
+          Download:
+            File-Name: 'GlobalMarket %date%'
+            Only-Database-Mode: '{prefix}&eThis operation can only be performed in the database mode!'
+            Succeeded: '{prefix}&aSuccessfully downloaded all the data of the global market to the local directory &e%path% &a.'
+            Failed: '{prefix}&cDownload failed! Error: &e%error%'
           Upload:
             File-Name: 'Database'
             Only-Database-Mode: '{prefix}&eThis operation can only be performed in the database mode!'
@@ -572,8 +572,8 @@ English:
           Starting: '{prefix}&aStart roll back, this may take longer...'
           RollingBack: '{prefix}&eThe plugin is in the process of being archived. Do not do this.'
           Failed: '{prefix}&cRoll Back failed with error: &e%error% .'
-            Successfully: '{prefix}&aBackup file &e%file% &ahas been run and all stored data has been backed up.'
-            Backup-Not-Exist: '{prefix}&cBackup file &e%file% &cnot exist.'
+          Successfully: '{prefix}&aBackup file &e%file% &ahas been run and all stored data has been backed up.'
+          Backup-Not-Exist: '{prefix}&cBackup file &e%file% &cnot exist.'
         ItemCollection:
             Help:
                 - '&e▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬'

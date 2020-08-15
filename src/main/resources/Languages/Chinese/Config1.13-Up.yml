@@ -41,15 +41,15 @@ Settings:
       Update-Delay: 5
   #重定价超时时间（秒）
     Repricing-Timeout: 30
-    #是否在玩家发起新拍卖时向服务器里所有玩家发送信息提示
+  #是否在玩家发起新拍卖时向服务器里所有玩家发送信息提示
     Auction-Starts-Broadcast: true
-    #是否在玩家登入的时候提示是否有新的物品邮件
+  #是否在玩家登入的时候提示是否有新的物品邮件
     Join-Message: true
-    #是否允许损坏的物品上架
+  #是否允许损坏的物品上架
     Allow-Damaged-Items: false
-    #是否在使用主命令时，打开的是商品筛选界面而不是市场主界面
+  #是否在使用主命令时，打开的是商品筛选界面而不是市场主界面
     Category-Page-Opens-First: false
-    #收购物品时，是否匹配买家物品和卖家的物品NBT是否一致
+  #收购物品时，是否匹配买家物品和卖家的物品NBT是否一致
     #如果该选项关闭，双方物品仅需材质一致即可达成交易
     Item-NBT-comparison: true
     Feature-Toggle:
@@ -700,12 +700,12 @@ Settings:
                         Clear:
                           Permission: crazyauctionsplus.command.admin.market.clear
                           Default: false
-                            List:
-                                Permission: crazyauctionsplus.command.admin.market.list
-                                Default: false
-                            Repricing:
-                              Permission: crazyauctionsplus.command.admin.market.repricing
-                              Default: false
+                        List:
+                          Permission: crazyauctionsplus.command.admin.market.list
+                          Default: false
+                        Repricing:
+                          Permission: crazyauctionsplus.command.admin.market.repricing
+                          Default: false
                         Delete:
                           Permission: crazyauctionsplus.command.admin.market.delete
                           Default: false
@@ -749,10 +749,10 @@ Settings:
                           Default: false
                         Delete:
                           Permission: crazyauctionsplus.command.admin.itemcollection.delete
-                                Default: false
-                            List:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.list
-                                Default: false
-                            Give:
-                                Permission: crazyauctionsplus.command.admin.itemcollection.give
-                                Default: false
+                          Default: false
+                        List:
+                          Permission: crazyauctionsplus.command.admin.itemcollection.list
+                          Default: false
+                        Give:
+                          Permission: crazyauctionsplus.command.admin.itemcollection.give
+                          Default: false

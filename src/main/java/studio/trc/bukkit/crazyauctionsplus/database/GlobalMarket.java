@@ -47,7 +47,6 @@ public interface GlobalMarket
      */
     public void clearGlobalMarket();
 
-
     /**
      * Save market data
      */

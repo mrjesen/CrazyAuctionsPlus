@@ -116,6 +116,7 @@ public class SQLiteEngine
             } catch (IOException ex) {
                 if (Main.language.get("SQLite-ConnectionError") != null) Main.getInstance().getServer().getConsoleSender().sendMessage(Main.language.getProperty("SQLite-ConnectionError").replace("{prefix}", PluginControl.getPrefix()).replace("{error}", ex.getLocalizedMessage()).replace("&", "§"));
                 FileManager.Files.CONFIG.getFile().set("Settings.SQLite-Storage.Enabled", false);
+                PluginControl.printStackTrace(ex);
                 return;
             }
         }
