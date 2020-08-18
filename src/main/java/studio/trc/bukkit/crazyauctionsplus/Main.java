@@ -83,11 +83,13 @@ public class Main
         pm.registerEvents(new ShopSign(), this);
         pm.registerEvents(new AuctionEvents(), this);
         PluginCommand pc = new PluginCommand();
-        getCommand("CrazyAuctionsPlus").setExecutor(pc);
-        getCommand("CrazyAuctions").setExecutor(pc);
-        getCommand("CrazyAuction").setExecutor(pc);
-        getCommand("CA").setExecutor(pc);
-        getCommand("CAP").setExecutor(pc);
+        //Command Exec & Complete
+        String[] cmds = {"CA", "CAP", "CrazyAuction", "CrazyAuctions", "CrazyAuctionsPlus"};
+        for (int each = 0; each < cmds.length; each++) {
+            getCommand(cmds[each]).setExecutor(pc);
+            getCommand(cmds[each]).setTabCompleter(pc);
+        }
+
         startCheck();
         Vault.setupEconomy();
         if (!PluginControl.useMySQLStorage() && !PluginControl.useSQLiteStorage()) {
